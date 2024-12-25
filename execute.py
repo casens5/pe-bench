@@ -122,7 +122,7 @@ def process_solutions(model_name, language, max_problem_number):
         print(f"Executed {solution_code}:{output}")
         solutions[problem_number] = output
 
-        # Write the solutions to a JSON file after processing all files
+        # Write the solutions to a JSON file. We write this after each solution to avoid losing progress.
         with open(solutions_json_path, 'w', encoding='utf-8') as json_file:
             json.dump(solutions, json_file, indent=4)
 
@@ -165,8 +165,27 @@ def main():
             points += expected_solutions[problem_number]['points']
         count += 1
 
-    points = points / count
+    points = round(points / count, 2)
     print(f"Points: {points}")
+
+    # open the benchmark file and update the points
+    benchmark_file = 'benchmark.json'
+    benchmark = {}
+    with open(benchmark_file, 'r', encoding='utf-8') as json_file:
+        benchmark = json.load(json_file)
+
+    # update the benchmark entry
+    entry = benchmark.get(model_name, {})
+    series_name = f"{language}-{max_problem_number}"
+    entry[series_name] = points
+    benchmark[model_name] = entry
+
+    # sort the benchmark with the highest points first, use the series name "python-100" as the key
+    sorted_benchmark = dict(sorted(benchmark.items(), key=lambda item: -item[1]["python-100"]))
+
+    # write the updated benchmark file
+    with open(benchmark_file, 'w', encoding='utf-8') as json_file:
+        json.dump(sorted_benchmark, json_file, indent=4)
 
 if __name__ == "__main__":
     main()

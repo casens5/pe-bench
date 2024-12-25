@@ -1,0 +1,14 @@
+{
+    "athene-v2:72b-q8_0": {
+        "python-100": 12.7
+    },
+    "llama3.2:latest": {
+        "python-100": 2.14
+    },
+    "qwen2.5:0.5b-instruct-q8_0": {
+        "python-100": 1.01
+    },
+    "qwen2.5-coder:0.5b": {
+        "python-100": 0.13
+    }
+}
