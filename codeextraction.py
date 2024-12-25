@@ -34,7 +34,8 @@ def extract_code_block(markdown_content, language, extension):
     code_block = code_blocks[0] if len(code_blocks) > 0 else ""
 
     # remove first line from code block if it contains only one word, the name of the language
-    if code_block == extension or code_block == language:
+    first_line = code_block.split('\n')[0]
+    if first_line == extension or first_line == language:
         # just get a substring starting from the first newline
         code_block = code_block[code_block.find('\n') + 1:]
 
@@ -73,11 +74,11 @@ def process_markdown_files(model_name, language):
 
 def main():
     parser = ArgumentParser(description="Extract code blocks from Markdown files.")
-    parser.add_argument('--model_name', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
+    parser.add_argument('--model', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
     parser.add_argument('--language', required=False, default='python', help='Name of the language to use, default is python')
 
     args = parser.parse_args()
-    model_name = args.model_name
+    model_name = args.model
     language = args.language
     process_markdown_files(model_name, language)
 

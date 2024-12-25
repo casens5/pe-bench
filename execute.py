@@ -1,10 +1,11 @@
 import os
 import json
-import sys
 from argparse import ArgumentParser
 from io import StringIO
 from contextlib import redirect_stdout
 import traceback
+import builtins
+import multiprocessing
 
 def get_extension(language):
     if language == 'c': return 'c'
@@ -26,24 +27,19 @@ def get_extension(language):
     else:
         raise Exception(f"Unsupported language: {language}")
 
-def execute_python_code(code):
-    # Define allowed built-ins (modify as needed)
-    allowed_builtins = {
-        'print': print,
-        'range': range,
-        'len': len,
-        'int': int,
-        'float': float,
-        'str': str,
-        'sum': sum,
-        # Add other safe built-ins as necessary
-    }
+def execute_python_code_worker(code, output_queue):
+    # Define allowed built-ins
+    safe_builtins = [
+        'print', 'range', 'len', 'int', 'float', 'str', 'sum',
+        'enumerate', 'sorted', 'reversed', 'zip', 'map', 'filter',
+        'any', 'all', 'min', 'max', 'abs', 'pow', 'round', 'ord', 
+        'list', 'dict', 'set', 'tuple', 'type', 'isinstance', 'bin',
+    ]
+    allowed_builtins = {name: getattr(builtins, name) for name in safe_builtins}
 
-    # Define allowed modules (modify as needed)
-    allowed_modules = {
-        'math': __import__('math'),
-        # Add other allowed modules here
-    }
+    # Define allowed modules
+    allowed_module_names = ['math', 'itertools', 'random']  # Add more as needed
+    allowed_modules = {name: __import__(name) for name in allowed_module_names}
 
     # Custom __import__ function to restrict imports
     def safe_import(name, globals=None, locals=None, fromlist=(), level=0):
@@ -68,10 +64,32 @@ def execute_python_code(code):
         # Capture the traceback
         error_trace = traceback.format_exc()
         output = f"Error executing code: {e}\nTraceback:\n{error_trace}"
-    return output
+    output_queue.put({"output": output})
+
+def execute_python_code(code, timeout=10):
+    output_queue = multiprocessing.Queue()
+    process = multiprocessing.Process(target=execute_python_code_worker, args=(code, output_queue))
+    process.start()
+    process.join(timeout)
+    
+    if process.is_alive():
+        process.terminate()
+        process.join()
+        return "Error: Code execution timed out."
+    
+    try:
+        result = output_queue.get_nowait()
+        if "output" in result:
+            return result["output"]
+        elif "error" in result:
+            return result["error"]
+        else:
+            return "Error: Unknown issue occurred during code execution."
+    except multiprocessing.queues.Empty:
+        return "Error: No output received from the executed code."
 
 
-def process_psolutions(model_name, language):
+def process_solutions(model_name, language, max_problem_number):
     results_dir = os.path.join('solutions', model_name, language)
     solutions_json_path = os.path.join('solutions', model_name, language, 'solutions.json')
     extension = get_extension(language)
@@ -87,6 +105,7 @@ def process_psolutions(model_name, language):
         print(f"Processing for execution: {solution_code_path}")
         extlen = len(extension) + 1
         problem_number = solution_code[:-extlen]  # Remove extension
+        if int(problem_number) > max_problem_number: break
 
         output = ""
         if language == 'python':
@@ -95,10 +114,11 @@ def process_psolutions(model_name, language):
 
             # Execute the code and capture the output
             output = execute_python_code(code)
-
+            #print(f"Executed {code}, raw output:{output}")
+       
         # if the output has several lines, we only want the last one
-        print(f"Executed {solution_code}, raw output:{output}")
-        output = output.split('\n')[-1]
+        #print(f"Executed {solution_code}, raw output:{output}")
+        output = output.strip().split('\n')[-1]
         print(f"Executed {solution_code}:{output}")
         solutions[problem_number] = output
 
@@ -107,17 +127,46 @@ def process_psolutions(model_name, language):
             json.dump(solutions, json_file, indent=4)
 
     print(f"Executed all Python files and saved results to {solutions_json_path}")
+    return solutions
 
 def main():
     parser = ArgumentParser(description="Execute solutions and store results in a JSON file.")
-    parser.add_argument('--model_name', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
+    parser.add_argument('--model', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
     parser.add_argument('--language', required=False, default='python', help='Name of the programming language to use, default is python')
+    parser.add_argument('--n100', action='store_true', help='only 100 problems') # this is the default
+    parser.add_argument('--n200', action='store_true', help='only 200 problems')
+    parser.add_argument('--n400', action='store_true', help='only 400 problems')
+    parser.add_argument('--nall', action='store_true', help='all problems')
 
     args = parser.parse_args()
-    model_name = args.model_name
+    model_name = args.model
     language = args.language
+    max_problem_number = 100
+    if args.n100: max_problem_number = 100
+    if args.n200: max_problem_number = 200
+    if args.n400: max_problem_number = 400
+    if args.nall: max_problem_number = 9999
 
-    process_psolutions(model_name, language)
+    solutions = process_solutions(model_name, language, max_problem_number)
+
+    # evaluate the solutions by comparing with the expected results
+    with open('solutions.json', 'r', encoding='utf-8') as json_file:
+        expected_solutions = json.load(json_file)
+    points = 0.0
+    count = 0
+    for problem_number in solutions:
+        if problem_number not in expected_solutions:
+            print(f"Problem {problem_number} not found in expected solutions.")
+            continue
+        expected = expected_solutions[problem_number]
+        solution = solutions[problem_number]
+        expected_solution = expected['solution']
+        if solution == expected_solution:
+            points += expected_solutions[problem_number]['points']
+        count += 1
+
+    points = points / count
+    print(f"Points: {points}")
 
 if __name__ == "__main__":
     main()

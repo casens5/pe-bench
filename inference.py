@@ -8,15 +8,14 @@ def read_template(template_path):
     with open(template_path, 'r', encoding='utf-8') as file:
         return file.read()
 
-def process_problem_files(problems_dir, template_content, api_base, model_name, language, skip_existing):
+def process_problem_files(problems_dir, template_content, api_base, model_name, language, max_problem_number=9999, skip_existing=False):
     results_dir = os.path.join('solutions', model_name, language)
     os.makedirs(results_dir, exist_ok=True)
 
     for problem_file in sorted(os.listdir(problems_dir)):
-        if not problem_file.endswith('.txt'):
-            continue
-
+        if not problem_file.endswith('.txt'): continue
         problem_number = problem_file[:-4]  # Remove .txt extension
+        if int(problem_number) > max_problem_number: break
         problem_path = os.path.join(problems_dir, problem_file)
         result_file_path = os.path.join(results_dir, f"{problem_number}.md")
         if skip_existing and os.path.exists(result_file_path):
@@ -91,15 +90,24 @@ def ollama_client(api_base='http://localhost:11434', model_name='llama3.2:latest
 def main():
     parser = ArgumentParser(description="Process Euler problems and send them to an LLM.")
     parser.add_argument('--api_base', required=False, default='http://localhost:11434', help='API base URL for the LLM, default is http://localhost:11434')
-    parser.add_argument('--model_name', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
+    parser.add_argument('--model', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
     parser.add_argument('--language', required=False, default='python', help='Name of the programming language to use, default is python')
     parser.add_argument('--skip_existing', action='store_true', help='if set, skip problems that already have a solution')
+    parser.add_argument('--n100', action='store_true', help='only 100 problems') # this is the default
+    parser.add_argument('--n200', action='store_true', help='only 200 problems')
+    parser.add_argument('--n400', action='store_true', help='only 400 problems')
+    parser.add_argument('--nall', action='store_true', help='all problems')
 
     args = parser.parse_args()
 
     api_base = args.api_base
-    model_name = args.model_name
+    model_name = args.model
     language = args.language
+    max_problem_number = 100
+    if args.n100: max_problem_number = 100
+    if args.n200: max_problem_number = 200
+    if args.n400: max_problem_number = 400
+    if args.nall: max_problem_number = 9999
 
     problems_dir = 'problems'
     template_path = os.path.join('templates', 'template_' + args.language + '.md')
@@ -111,7 +119,7 @@ def main():
         raise Exception(f"Template file {template_path} does not exist.")
 
     template_content = read_template(template_path)
-    process_problem_files(problems_dir, template_content, api_base, model_name, language, args.skip_existing)
+    process_problem_files(problems_dir, template_content, api_base, model_name, language, max_problem_number = max_problem_number, skip_existing = args.skip_existing)
 
 if __name__ == "__main__":
     main()
