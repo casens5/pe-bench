@@ -1,31 +1,93 @@
 import os
-import requests
 import json
+import requests
+from bs4 import BeautifulSoup
 
-# URL of the file to be downloaded
-url = "https://raw.githubusercontent.com/lucky-bai/projecteuler-solutions/refs/heads/master/Solutions.md"
+def parse_html_table(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    
+    # Find the table with id 'problems_table'
+    table = soup.find('table', id='problems_table')
+    if not table:
+        raise ValueError("No table found with id 'problems_table'")
+    
+    result = {}
+    
+    # Find all rows in the table
+    rows = table.find_all('tr')
+    
+    # Skip the header row
+    for row in rows[1:]:
+        cols = row.find_all('td')
+        if len(cols) != 3: continue
+        
+        # Extract ID
+        id_text = cols[0].get_text(strip=True)
+        if not id_text.isdigit(): continue
+        id_num = int(id_text)
+        id_str = f"{id_num:04d}"  # Pad with leading zeros to make 4 characters
+        
+        # Extract Title
+        title_tag = cols[1].find('a')
+        if title_tag:
+            title = title_tag.get_text(strip=True)
+        else:
+            title = cols[1].get_text(strip=True)
+        
+        # Extract Solved By
+        solved_by_text = cols[2].get_text(strip=True)
+        if solved_by_text.isdigit():
+            solved_by = int(solved_by_text)
+        else:
+            # Handle cases where 'Solved By' is not purely digits
+            solved_by = solved_by_text
+        
+        # Add to result dictionary
+        result[id_str] = {
+            "title": title,
+            "solved_by": solved_by
+        }
+    
+    return result
 
-# Output filename for the markdown file
-output_filename_md = "solutions.md"
+def scrape_statistics():
+    # Iterate over the Project Euler Problem Archives
+    base_url = "https://projecteuler.net/archives;page="
 
-# Output filename for the JSON file
-output_filename_json = "solutions.json"
+    statistics = {}
 
-# Send a GET request to the URL
-response = requests.get(url)
+    for i in range(1, 20):
+        # Create the full URL for the current problem
+        url = f"{base_url}{i}"
 
-# Check if the request was successful
-if response.status_code == 200:
-    # Write the content of the response to a file named solutions.md
-    with open(output_filename_md, 'w', encoding='utf-8') as file:
-        file.write(response.text)
+        # Send a GET request to the URL
+        response = requests.get(url)
 
-    print(f"Downloaded {url} and saved it as {output_filename_md}")
+        # Check if the request was successful
+        if response.status_code == 200:
+            print(f"Scraping Project Euler Problem Archives page {i}...")
+            # get the html
+            html_content = response.text
 
-    # Parse the downloaded markdown file and create a dictionary
+            # Parse the HTML and get the data
+            data = parse_html_table(html_content)
+
+            # Add the data to the statistics dictionary
+            statistics.update(data)
+            print(f"Total problems found so far: {len(statistics)}")
+    
+    # sort the dictionary by key
+    statistics = dict(sorted(statistics.items()))
+    return statistics
+    
+def scrape_solutions():
+    url = "https://raw.githubusercontent.com/lucky-bai/projecteuler-solutions/refs/heads/master/Solutions.md"
+    response = requests.get(url)
     solutions_dict = {}
-    with open(output_filename_md, 'r', encoding='utf-8') as file:
-        lines = file.readlines()
+
+    if response.status_code == 200:
+        # read the content of the response line by line
+        lines = response.text.splitlines()
         for line in lines:
             # Skip lines that do not start with a number followed by a dot
             if line[0].isdigit() and (line[1] == '.' or line[2] == '.' or line[3] == '.'):
@@ -42,10 +104,37 @@ if response.status_code == 200:
                     # Add to the dictionary
                     solutions_dict[formatted_key] = solution
 
-    # Write the dictionary to a JSON file
-    with open(output_filename_json, 'w', encoding='utf-8') as json_file:
-        json.dump(solutions_dict, json_file, indent=4)
+    return solutions_dict
 
-    print(f"Parsed and saved data to {output_filename_json}")
-else:
-    print(f"Failed to download the file. Status code: {response.status_code}")
+def main():
+    print("Scraping Project Euler Problem Statistics...")
+    statistics_dict = scrape_statistics()
+    print("Scraping Project Euler Problem Solutions...")
+    solutions_dict = scrape_solutions()
+
+    # combine the two dictionaries
+    for key, value in statistics_dict.items():
+        if key in solutions_dict:
+            statistics_dict[key]["solution"] = solutions_dict[key]
+
+    # find the number of participants
+    participants = 1325386 # taken from the web page https://projecteuler.net/about
+    #participants = max(statistics_dict.values(), key=lambda x: x["solved_by"])["solved_by"]
+
+    # assign a difficulty level to each problem
+    for key, value in statistics_dict.items():
+        solved_by = value["solved_by"]
+        
+        # points and percentage of users who solved the problem
+        points = participants / solved_by
+        percentage_solved = 100 / points
+
+        statistics_dict[key]["percentage_solved"] = percentage_solved
+        statistics_dict[key]["points"] = points
+
+    output_filename_json = "solutions.json"
+    with open(output_filename_json, 'w', encoding='utf-8') as json_file:
+        json.dump(statistics_dict, json_file, indent=4)
+
+if __name__ == "__main__":
+    main()
