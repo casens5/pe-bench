@@ -30,7 +30,7 @@ def get_extension(language):
 def execute_python_code_worker(code, output_queue):
     # Define allowed built-ins
     safe_builtins = [
-        'print', 'range', 'len', 'int', 'float', 'str', 'sum',
+        'print', 'range', 'len', 'int', 'float', 'str', 'sum', 'chr',
         'enumerate', 'sorted', 'reversed', 'zip', 'map', 'filter',
         'any', 'all', 'min', 'max', 'abs', 'pow', 'round', 'ord', 
         'list', 'dict', 'set', 'tuple', 'type', 'isinstance', 'bin',

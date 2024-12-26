@@ -10,10 +10,12 @@ The computed Benchmarks are so far:
 
 | Model                      | Size (Billion Parameters) | Quantization (Bits)| PE-Bench-Python-100 |
 | :------------------------- | ------------------------: | -----------------: | ------------------: |
-| athene-v2:72b-q8_0         |                        72 |                  8 |               12.70 |
-| llama3.2:latest            |                         3 |                  8 |                2.14 |
-| qwen2.5:0.5b-instruct-q8_0 |                       0.5 |                  8 |                1.01 |
-| qwen2.5-coder:0.5b         |                       0.5 |                  8 |                0.13 |
+| athene-v2:72b-q8_0         |                      72.7 |                  8 |               12.70 |
+| vanilj/Phi-4:Q8_0          |                      14.7 |                  8 |                7.81 |
+| nemotron:70b-instruct-q8_0 |                      70.6 |                  8 |                6.01 |
+| llama3.2:latest            |                       3.2 |                  8 |                2.14 |
+| qwen2.5:0.5b-instruct-q8_0 |                     0.494 |                  8 |                1.01 |
+| qwen2.5-coder:0.5b         |                     0.494 |                  8 |                0.13 |
 
 This shows that even very small models like the llama3.2 model has a two-fold super-human performance at solving those problems.
 
