@@ -8,22 +8,22 @@ a LLM is at coding with that given programming language.
 ## Results
 The computed Benchmarks are so far:
 
-| Model                            | Size (Billion Parameters) | Quantization (Bits) | PE-Bench-Python-100 |
-| :------------------------------- | ------------------------: | ------------------: | ------------------: |
-| athene-v2:72b-q8_0               |                      72.7 |                   8 |                12.7 |
-| qwen2.5:72b-instruct-q8_0        |                      72.7 |                   8 |               11.01 |
-| qwen2.5-coder:14b-instruct-q8_0  |                      14.8 |                   8 |                 9.7 |
-| vanilj/Phi-4:Q8_0                |                      14.7 |                   8 |                7.81 |
-| qwen2.5:7b-instruct-q8_0         |                       7.6 |                   8 |                 6.4 |
-| qwen2.5-coder:7b-instruct-q8_0   |                       7.6 |                   8 |                6.13 |
-| nemotron:70b-instruct-q8_0       |                      70.6 |                   8 |                6.01 |
-| qwen2.5-coder:3b-instruct-q8_0   |                       3.1 |                   8 |                4.32 |
-| qwen2.5:3b-instruct-q8_0         |                       3.1 |                   8 |                2.87 |
-| llama3.2:latest                  |                      3.21 |                   4 |                2.14 |
-| qwen2.5:1.5b-instruct-q8_0       |                       1.5 |                   8 |                1.98 |
-| qwen2.5-coder:1.5b-instruct-q8_0 |                       1.5 |                   8 |                1.95 |
-| qwen2.5:0.5b-instruct-q8_0       |                    494.03 |                   8 |                1.01 |
-| qwen2.5-coder:0.5b-instruct-q8_0 |                    494.03 |                   8 |                0.13 |
+| Model                            | Size (*10^9 Params) | Quantization (Bits) | Context Length (K) | PE-Bench-Python-100 |
+| :------------------------------- | ------------------: | ------------------: | -----------------: | ------------------: |
+| athene-v2:72b-q8_0               |                72.7 |                   8 |                128 |                12.7 |
+| qwen2.5:72b-instruct-q8_0        |                72.7 |                   8 |                128 |               11.01 |
+| qwen2.5-coder:14b-instruct-q8_0  |                14.8 |                   8 |                128 |                 9.7 |
+| vanilj/Phi-4:Q8_0                |                14.7 |                   8 |                 16 |                7.81 |
+| qwen2.5:7b-instruct-q8_0         |                 7.6 |                   8 |                128 |                 6.4 |
+| qwen2.5-coder:7b-instruct-q8_0   |                 7.6 |                   8 |                128 |                6.13 |
+| nemotron:70b-instruct-q8_0       |                70.6 |                   8 |                128 |                6.01 |
+| qwen2.5-coder:3b-instruct-q8_0   |                 3.1 |                   8 |                 32 |                4.32 |
+| qwen2.5:3b-instruct-q8_0         |                 3.1 |                   8 |                128 |                2.87 |
+| llama3.2:latest                  |                3.21 |                   4 |                128 |                2.14 |
+| qwen2.5:1.5b-instruct-q8_0       |                 1.5 |                   8 |                128 |                1.98 |
+| qwen2.5-coder:1.5b-instruct-q8_0 |                 1.5 |                   8 |                 32 |                1.95 |
+| qwen2.5:0.5b-instruct-q8_0       |                 0.5 |                   8 |                128 |                1.01 |
+| qwen2.5-coder:0.5b-instruct-q8_0 |                 0.5 |                   8 |                 32 |                0.13 |
 
 This shows that even very small models like the llama3.2 model has a two-fold super-human performance at solving those problems.
 

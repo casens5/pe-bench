@@ -1,71 +1,85 @@
 {
     "athene-v2:72b-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 72.7,
         "_quantization_level": 8,
         "python-100": 12.7
     },
     "qwen2.5:72b-instruct-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 72.7,
         "_quantization_level": 8,
         "python-100": 11.01
     },
     "qwen2.5-coder:14b-instruct-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 14.8,
         "_quantization_level": 8,
         "python-100": 9.7
     },
     "vanilj/Phi-4:Q8_0": {
+        "_context_size": 16,
         "_parameter_size": 14.7,
         "_quantization_level": 8,
         "python-100": 7.81
     },
     "qwen2.5:7b-instruct-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 7.6,
         "_quantization_level": 8,
         "python-100": 6.4
     },
     "qwen2.5-coder:7b-instruct-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 7.6,
         "_quantization_level": 8,
         "python-100": 6.13
     },
     "nemotron:70b-instruct-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 70.6,
         "_quantization_level": 8,
         "python-100": 6.01
     },
     "qwen2.5-coder:3b-instruct-q8_0": {
+        "_context_size": 32,
         "_parameter_size": 3.1,
         "_quantization_level": 8,
         "python-100": 4.32
     },
     "qwen2.5:3b-instruct-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 3.1,
         "_quantization_level": 8,
         "python-100": 2.87
     },
     "llama3.2:latest": {
+        "_context_size": 128,
         "_parameter_size": 3.21,
         "_quantization_level": 4,
         "python-100": 2.14
     },
     "qwen2.5:1.5b-instruct-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 1.5,
         "_quantization_level": 8,
         "python-100": 1.98
     },
     "qwen2.5-coder:1.5b-instruct-q8_0": {
+        "_context_size": 32,
         "_parameter_size": 1.5,
         "_quantization_level": 8,
         "python-100": 1.95
     },
     "qwen2.5:0.5b-instruct-q8_0": {
-        "_parameter_size": 494.03,
+        "_context_size": 128,
+        "_parameter_size": 0.5,
         "_quantization_level": 8,
         "python-100": 1.01
     },
     "qwen2.5-coder:0.5b-instruct-q8_0": {
-        "_parameter_size": 494.03,
+        "_context_size": 32,
+        "_parameter_size": 0.5,
         "_quantization_level": 8,
         "python-100": 0.13
     }
