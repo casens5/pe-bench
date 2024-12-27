@@ -181,7 +181,7 @@ def main():
         benchmark[model_name] = entry
 
         # sort the benchmark with the highest points first, use the series name "python-100" as the key
-        sorted_benchmark = dict(sorted(benchmark.items(), key=lambda item: -item[1]["python-100"]))
+        sorted_benchmark = dict(sorted(benchmark.items(), key=lambda item: -item[1].get("python-100", 0)))
 
         # write the updated benchmark file
         with open(benchmark_file, 'w', encoding='utf-8') as json_file:
