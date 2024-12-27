@@ -88,7 +88,6 @@ def execute_python_code(code, timeout=10):
     except multiprocessing.queues.Empty:
         return "Error: No output received from the executed code."
 
-
 def process_solutions(model_name, language, max_problem_number):
     results_dir = os.path.join('solutions', model_name, language)
     solutions_json_path = os.path.join('solutions', model_name, language, 'solutions.json')
@@ -149,43 +148,46 @@ def main():
 
     solutions = process_solutions(model_name, language, max_problem_number)
 
-    # evaluate the solutions by comparing with the expected results
-    with open('solutions.json', 'r', encoding='utf-8') as json_file:
-        expected_solutions = json.load(json_file)
-    points = 0.0
-    count = 0
-    for problem_number in solutions:
-        if problem_number not in expected_solutions:
-            print(f"Problem {problem_number} not found in expected solutions.")
-            continue
-        expected = expected_solutions[problem_number]
-        solution = solutions[problem_number]
-        expected_solution = expected['solution']
-        if solution == expected_solution:
-            points += expected_solutions[problem_number]['points']
-        count += 1
+    if len(solutions) == max_problem_number:
+        # evaluate the solutions by comparing with the expected results
+        with open('solutions.json', 'r', encoding='utf-8') as json_file:
+            expected_solutions = json.load(json_file)
+        points = 0.0
+        count = 0
+        for problem_number in solutions:
+            if problem_number not in expected_solutions:
+                print(f"Problem {problem_number} not found in expected solutions.")
+                continue
+            expected = expected_solutions[problem_number]
+            solution = solutions[problem_number]
+            expected_solution = expected['solution']
+            if solution == expected_solution:
+                points += expected_solutions[problem_number]['points']
+            count += 1
 
-    points = round(points / count, 2)
-    print(f"Points: {points}")
+        points = round(points / count, 2)
+        print(f"Points: {points}")
 
-    # open the benchmark file and update the points
-    benchmark_file = 'benchmark.json'
-    benchmark = {}
-    with open(benchmark_file, 'r', encoding='utf-8') as json_file:
-        benchmark = json.load(json_file)
+        # open the benchmark file and update the points
+        benchmark_file = 'benchmark.json'
+        benchmark = {}
+        with open(benchmark_file, 'r', encoding='utf-8') as json_file:
+            benchmark = json.load(json_file)
 
-    # update the benchmark entry
-    entry = benchmark.get(model_name, {})
-    series_name = f"{language}-{max_problem_number}"
-    entry[series_name] = points
-    benchmark[model_name] = entry
+        # update the benchmark entry
+        entry = benchmark.get(model_name, {})
+        series_name = f"{language}-{max_problem_number}"
+        entry[series_name] = points
+        benchmark[model_name] = entry
 
-    # sort the benchmark with the highest points first, use the series name "python-100" as the key
-    sorted_benchmark = dict(sorted(benchmark.items(), key=lambda item: -item[1]["python-100"]))
+        # sort the benchmark with the highest points first, use the series name "python-100" as the key
+        sorted_benchmark = dict(sorted(benchmark.items(), key=lambda item: -item[1]["python-100"]))
 
-    # write the updated benchmark file
-    with open(benchmark_file, 'w', encoding='utf-8') as json_file:
-        json.dump(sorted_benchmark, json_file, indent=4)
+        # write the updated benchmark file
+        with open(benchmark_file, 'w', encoding='utf-8') as json_file:
+            json.dump(sorted_benchmark, json_file, indent=4)
+    else:
+        print("Not all solutions were executed, so the benchmark was not updated.")
 
 if __name__ == "__main__":
     main()

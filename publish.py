@@ -38,6 +38,7 @@ for key, value in benchmark.items():
     col_quant_v = str(value.get('_quantization_level', ''))
     col_context_v = str(value.get('_context_size', ''))
     col_bench_python_100_v = str(value.get('python-100', ''))
+    if col_bench_python_100_v == '': continue
     newtable += "| " + key + " "*(maxkey - len(key)) 
     newtable += " | " + " "*(len(col_size) - len(col_size_v)) + col_size_v
     newtable += " | " + " "*(len(col_quant) - len(col_quant_v)) + col_quant_v
