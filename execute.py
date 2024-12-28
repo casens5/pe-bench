@@ -1,11 +1,13 @@
 import os
+import sys
 import json
-from argparse import ArgumentParser
-from io import StringIO
-from contextlib import redirect_stdout
-import traceback
 import builtins
+import traceback
+import subprocess
 import multiprocessing
+from io import StringIO
+from argparse import ArgumentParser
+from contextlib import redirect_stdout
 
 def get_extension(language):
     if language == 'c': return 'c'
@@ -22,6 +24,7 @@ def get_extension(language):
     elif language == 'prolog': return 'pl'
     elif language == 'matlab': return 'matlab'
     elif language == 'kotlin': return 'kt'
+    elif language == 'clojure': return 'clj'
     elif language == 'fortran': return 'f'
     elif language == 'javascript': return 'js'
     else:
@@ -87,6 +90,25 @@ def execute_python_code(code, timeout=10):
             return "Error: Unknown issue occurred during code execution."
     except multiprocessing.queues.Empty:
         return "Error: No output received from the executed code."
+    
+def execute_clojure_code(code, timeout=10):
+    #print(f"Executing Clojure code: {code}")
+    try:
+        # Execute the Clojure program using the Clojure CLI with a timeout
+        result = subprocess.run(
+            ["clj", "-M", "-e", code],  # Use the `-e` flag to evaluate the program directly
+            capture_output=True,  # Capture stdout and stderr
+            text=True,            # Return output as a string
+            timeout=timeout       # Set a timeout
+        )
+        #print(result)
+        # Capture the output
+        output = result.stdout.strip()  # Remove any extra whitespace
+        return output
+
+    except subprocess.TimeoutExpired:
+        # Handle the timeout
+        return "Error: Clojure program execution timed"
 
 def process_solutions(model_name, language, max_problem_number):
     results_dir = os.path.join('solutions', model_name, language)
@@ -101,24 +123,25 @@ def process_solutions(model_name, language, max_problem_number):
     for solution_code in python_files:
         if not solution_code.endswith('.' + extension): continue
         solution_code_path = os.path.join(results_dir, solution_code)
-        print(f"Processing for execution: {solution_code_path}")
         extlen = len(extension) + 1
         problem_number = solution_code[:-extlen]  # Remove extension
         if int(problem_number) > max_problem_number: break
+        with open(solution_code_path, 'r', encoding='utf-8') as file:
+            code = file.read()
+        #print(f"Processing for execution: {solution_code_path}: code:{code}")
+        print(f"Processing for execution: {solution_code_path}")
 
+        # Execute the code and capture the output
         output = ""
         if language == 'python':
-            with open(solution_code_path, 'r', encoding='utf-8') as file:
-                code = file.read()
-
-            # Execute the code and capture the output
             output = execute_python_code(code)
-            #print(f"Executed {code}, raw output:{output}")
+        if language == 'clojure':
+            output = execute_clojure_code(code)
        
         # if the output has several lines, we only want the last one
-        #print(f"Executed {solution_code}, raw output:{output}")
+        #print(f"Executed {solution_code_path}, raw output:{output}")
         output = output.strip().split('\n')[-1]
-        print(f"Executed {solution_code}:{output}")
+        print(f"Executed {solution_code_path}:{output}")
         solutions[problem_number] = output
 
         # Write the solutions to a JSON file. We write this after each solution to avoid losing progress.

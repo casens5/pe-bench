@@ -134,7 +134,7 @@ def main():
             "endpoint": f"{api_base}/v1/chat/completions",
         }
     problems_dir = 'problems'
-    template_path = os.path.join('templates', 'template_' + args.language + '.md')
+    template_path = os.path.join('templates', 'template_' + language + '.md')
 
     if not os.path.exists(problems_dir):
         raise Exception(f"Problems directory {problems_dir} does not exist.")

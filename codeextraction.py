@@ -18,6 +18,7 @@ def get_extension(language):
     elif language == 'prolog': return 'pl'
     elif language == 'matlab': return 'matlab'
     elif language == 'kotlin': return 'kt'
+    elif language == 'clojure': return 'clj'
     elif language == 'fortran': return 'f'
     elif language == 'javascript': return 'js'
     else:

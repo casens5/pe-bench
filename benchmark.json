@@ -3,7 +3,8 @@
         "_context_size": 64,
         "_parameter_size": 671.0,
         "_quantization_level": 16,
-        "python-100": 15.58
+        "python-100": 15.58,
+        "clojure-100": 5.92
     },
     "athene-v2:72b-q8_0": {
         "_context_size": 128,
@@ -106,6 +107,12 @@
         "_parameter_size": 7.8,
         "_quantization_level": 8,
         "python-100": 4.53
+    },
+    "hf.co/bartowski/Yi-1.5-34B-Chat-GGUF:Q8_0": {
+        "_context_size": 4,
+        "_parameter_size": 34.4,
+        "_quantization_level": 8,
+        "python-100": 4.36
     },
     "qwen2.5-coder:3b-instruct-q8_0": {
         "_context_size": 32,
@@ -290,8 +297,5 @@
     "phi3:14b-medium-128k-instruct-q8_0": {
         "_parameter_size": 14.0,
         "_quantization_level": 8
-    },
-    "hf.co/bartowski/Yi-1.5-34B-Chat-GGUF:Q8_0": {
-        "_parameter_size": 34.4
     }
 }
