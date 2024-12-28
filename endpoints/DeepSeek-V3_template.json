@@ -1,0 +1,9 @@
+{
+    "name": "DeepSeek-V3",
+    "model": "deepseek-chat",
+    "key": "thekey",
+    "endpoint": "https://api.deepseek.com/chat/completions",
+    "_context_size": 64,
+    "_parameter_size": 671.0,
+    "_quantization_level": 16
+}

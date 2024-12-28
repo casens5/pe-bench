@@ -1,4 +1,10 @@
 {
+    "DeepSeek-V3": {
+        "_context_size": 64,
+        "_parameter_size": 671.0,
+        "_quantization_level": 16,
+        "python-100": 15.58
+    },
     "athene-v2:72b-q8_0": {
         "_context_size": 128,
         "_parameter_size": 72.7,
@@ -29,11 +35,35 @@
         "_quantization_level": 8,
         "python-100": 7.81
     },
+    "falcon3:10b-instruct-q8_0": {
+        "_context_size": 32,
+        "_parameter_size": 10.3,
+        "_quantization_level": 8,
+        "python-100": 7.42
+    },
+    "tulu3:70b-q8_0": {
+        "_context_size": 128,
+        "_parameter_size": 70.6,
+        "_quantization_level": 8,
+        "python-100": 7.34
+    },
+    "llama3.1:70b-instruct-q8_0": {
+        "_context_size": 128,
+        "_parameter_size": 70.6,
+        "_quantization_level": 8,
+        "python-100": 6.6
+    },
     "qwen2.5:7b-instruct-q8_0": {
         "_context_size": 128,
         "_parameter_size": 7.6,
         "_quantization_level": 8,
         "python-100": 6.4
+    },
+    "hf.co/bartowski/Anubis-70B-v1-GGUF:Q4_K_M": {
+        "_context_size": 128,
+        "_parameter_size": 70.6,
+        "_quantization_level": 4,
+        "python-100": 6.14
     },
     "qwen2.5-coder:7b-instruct-q8_0": {
         "_context_size": 128,
@@ -47,16 +77,35 @@
         "_quantization_level": 8,
         "python-100": 6.01
     },
+    "yi-coder:9b-chat-q4_K_M": {
+        "_context_size": 128,
+        "_parameter_size": 8.8,
+        "_quantization_level": 4,
+        "python-100": 5.87
+    },
     "qwen2-math:72b-instruct-q8_0": {
         "_context_size": 4,
         "_parameter_size": 72.7,
         "_quantization_level": 8,
         "python-100": 5.64
     },
+    "falcon3:7b-instruct-q8_0": {
+        "_context_size": 32,
+        "_parameter_size": 7.5,
+        "_quantization_level": 8,
+        "python-100": 5.57
+    },
     "gemma2:27b-instruct-q8_0": {
+        "_context_size": 8,
         "_parameter_size": 27.2,
         "_quantization_level": 8,
         "python-100": 5.18
+    },
+    "opencoder:8b-instruct-q8_0": {
+        "_context_size": 8,
+        "_parameter_size": 7.8,
+        "_quantization_level": 8,
+        "python-100": 4.53
     },
     "qwen2.5-coder:3b-instruct-q8_0": {
         "_context_size": 32,
@@ -65,6 +114,7 @@
         "python-100": 4.32
     },
     "tulu3:8b-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 8.0,
         "_quantization_level": 8,
         "python-100": 3.64
@@ -123,6 +173,12 @@
         "_quantization_level": 8,
         "python-100": 2.3
     },
+    "opencoder:1.5b-instruct-q8_0": {
+        "_context_size": 4,
+        "_parameter_size": 1.9,
+        "_quantization_level": 8,
+        "python-100": 2.2
+    },
     "llama3.2:latest": {
         "_context_size": 128,
         "_parameter_size": 3.21,
@@ -140,6 +196,12 @@
         "_parameter_size": 1.5,
         "_quantization_level": 8,
         "python-100": 1.95
+    },
+    "falcon3:3b-instruct-q8_0": {
+        "_context_size": 32,
+        "_parameter_size": 3.2,
+        "_quantization_level": 8,
+        "python-100": 1.89
     },
     "codegemma:7b-instruct-q8_0": {
         "_context_size": 8,
@@ -177,11 +239,23 @@
         "_quantization_level": 8,
         "python-100": 0.39
     },
+    "falcon3:1b-instruct-q8_0": {
+        "_context_size": 8,
+        "_parameter_size": 1.7,
+        "_quantization_level": 8,
+        "python-100": 0.25
+    },
     "granite3.1-moe:1b-instruct-q8_0": {
         "_context_size": 128,
         "_parameter_size": 1.3,
         "_quantization_level": 8,
         "python-100": 0.24
+    },
+    "llama3.2:1b-instruct-q8_0": {
+        "_context_size": 128,
+        "_parameter_size": 1.2,
+        "_quantization_level": 8,
+        "python-100": 0.23
     },
     "qwen2.5-coder:0.5b-instruct-q8_0": {
         "_context_size": 32,
@@ -189,48 +263,12 @@
         "_quantization_level": 8,
         "python-100": 0.13
     },
-    "tulu3:70b-q8_0": {
-        "_parameter_size": 70.6,
-        "_quantization_level": 8
-    },
-    "llama3.1:70b-instruct-q8_0": {
-        "_parameter_size": 70.6,
-        "_quantization_level": 8
-    },
     "deepseek-coder-v2:236b-instruct-q2_K": {
         "_parameter_size": 235.7,
         "_quantization_level": 2
     },
-    "llama3.2:1b-instruct-q8_0": {
-        "_parameter_size": 1.2,
-        "_quantization_level": 8
-    },
     "deepseek-coder-v2:16b-lite-instruct-q8_0": {
         "_parameter_size": 15.7,
-        "_quantization_level": 8
-    },
-    "opencoder:1.5b-instruct-q8_0": {
-        "_parameter_size": 1.9,
-        "_quantization_level": 8
-    },
-    "opencoder:8b-instruct-q8_0": {
-        "_parameter_size": 7.8,
-        "_quantization_level": 8
-    },
-    "falcon3:1b-instruct-q8_0": {
-        "_parameter_size": 1.7,
-        "_quantization_level": 8
-    },
-    "falcon3:3b-instruct-q8_0": {
-        "_parameter_size": 3.2,
-        "_quantization_level": 8
-    },
-    "falcon3:7b-instruct-q8_0": {
-        "_parameter_size": 7.5,
-        "_quantization_level": 8
-    },
-    "falcon3:10b-instruct-q8_0": {
-        "_parameter_size": 10.3,
         "_quantization_level": 8
     },
     "llama3.3:70b-instruct-q8_0": {
@@ -240,10 +278,6 @@
     "Bio-Medical-Llama-3-8B-GGUF:Q8_0": {
         "_parameter_size": 8.0,
         "_quantization_level": 8
-    },
-    "nemotron:70b": {
-        "_parameter_size": 70.6,
-        "_quantization_level": 4
     },
     "qwen2.5-coder:32b-instruct-q8_0": {
         "_parameter_size": 32.8,
@@ -256,5 +290,8 @@
     "phi3:14b-medium-128k-instruct-q8_0": {
         "_parameter_size": 14.0,
         "_quantization_level": 8
+    },
+    "hf.co/bartowski/Yi-1.5-34B-Chat-GGUF:Q8_0": {
+        "_parameter_size": 34.4
     }
 }

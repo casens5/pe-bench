@@ -8,8 +8,8 @@ def read_template(template_path):
     with open(template_path, 'r', encoding='utf-8') as file:
         return file.read()
 
-def process_problem_files(problems_dir, template_content, api_base, model_name, language, max_problem_number=9999, skip_existing=False):
-    results_dir = os.path.join('solutions', model_name, language)
+def process_problem_files(problems_dir, template_content, endpoint, language, max_problem_number=9999, skip_existing=False):
+    results_dir = os.path.join('solutions', endpoint["name"], language)
     os.makedirs(results_dir, exist_ok=True)
 
     for problem_file in sorted(os.listdir(problems_dir)):
@@ -29,7 +29,7 @@ def process_problem_files(problems_dir, template_content, api_base, model_name, 
         prompt = template_content.replace('$$$PROBLEM$$$', problem_content)
 
         try:
-            content = ollama_client(api_base, model_name, prompt)
+            content = ollama_client(endpoint, prompt)
 
             # Save the response to a file
             with open(result_file_path, 'w', encoding='utf-8') as result_file:
@@ -38,33 +38,38 @@ def process_problem_files(problems_dir, template_content, api_base, model_name, 
         except Exception as e:
             print(f"Failed to process problem {problem_number}: {e}")
 
-def ollama_client(api_base='http://localhost:11434', model_name='llama3.2:latest', prompt='Hello World', temperature=0.0, max_tokens=10000):
+def ollama_client(endpoint, prompt='Hello World', temperature=0.0, max_tokens=8192):
 
     # Disable SSL warnings
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
     # Prepare the API endpoint URL
-    endpoint = f"{api_base}/v1/chat/completions"
     stoptokens = ["[/INST]", "<|im_end|>", "<|end_of_turn|>", "<|eot_id|>", "<|end_header_id|>", "<EOS_TOKEN>", "</s>", "<|end|>"]
 
     # Set headers and payload
     headers = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
     }
+    if endpoint.get("key", ""):
+        headers['Authorization'] = 'Bearer ' + endpoint["key"]
+
     payload = {
-        "model": model_name,
-        "messages": [{"role": "user", "content": prompt}],
+        "model": endpoint["model"],
+        "messages": [{"content": "You are a helpful assistant", "role": "system"}, {"role": "user", "content": prompt}],
         "stop": stoptokens,
         "temperature": temperature,
         "max_tokens": max_tokens,
         "max_completion_tokens": max_tokens,
+        "response_format": { "type": "text" },
         "stream": False
     }
 
     try:
-        response = requests.post(endpoint, headers=headers, json=payload, verify=False)
+        response = requests.post(endpoint["endpoint"], headers=headers, json=payload, verify=False)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
+        # print(f"Failed to access api: {e}")
         # Get the error message from the response
         if response:
             try:
@@ -93,6 +98,7 @@ def main():
     parser.add_argument('--model', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
     parser.add_argument('--language', required=False, default='python', help='Name of the programming language to use, default is python')
     parser.add_argument('--skip_existing', action='store_true', help='if set, skip problems that already have a solution')
+    parser.add_argument('--endpoint', required=False, default='', help='Name of an <endpoint>.json file in the endpoints directory')
     parser.add_argument('--n100', action='store_true', help='only 100 problems') # this is the default
     parser.add_argument('--n200', action='store_true', help='only 200 problems')
     parser.add_argument('--n400', action='store_true', help='only 400 problems')
@@ -109,6 +115,24 @@ def main():
     if args.n400: max_problem_number = 400
     if args.nall: max_problem_number = 9999
 
+    # construct the endpoint object
+    endpoint_name = args.endpoint
+    endpoint = {}
+    if endpoint_name:
+        endpoint_path = os.path.join('endpoints', f"{endpoint_name}.json")
+        if not os.path.exists(endpoint_path):
+            raise Exception(f"Endpoint file {endpoint_path} does not exist.")
+        with open(endpoint_path, 'r', encoding='utf-8') as file:
+            endpoint = json.load(file)
+    else:
+        # construct the endpoint object from command line arguments considering that ollama is the endpoint
+        api_base='http://localhost:11434'
+        endpoint = {
+            "name": model_name,
+            "model": model_name,
+            "key": "",
+            "endpoint": f"{api_base}/v1/chat/completions",
+        }
     problems_dir = 'problems'
     template_path = os.path.join('templates', 'template_' + args.language + '.md')
 
@@ -119,7 +143,7 @@ def main():
         raise Exception(f"Template file {template_path} does not exist.")
 
     template_content = read_template(template_path)
-    process_problem_files(problems_dir, template_content, api_base, model_name, language, max_problem_number = max_problem_number, skip_existing = args.skip_existing)
+    process_problem_files(problems_dir, template_content, endpoint, language, max_problem_number = max_problem_number, skip_existing = args.skip_existing)
 
 if __name__ == "__main__":
     main()
