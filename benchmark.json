@@ -4,7 +4,8 @@
         "_parameter_size": 671.0,
         "_quantization_level": 16,
         "python-100": 15.58,
-        "clojure-100": 5.92
+        "clojure-100": 5.92,
+        "java-100": 16.95
     },
     "athene-v2:72b-q8_0": {
         "_context_size": 128,

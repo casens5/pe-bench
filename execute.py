@@ -1,6 +1,7 @@
 import os
-import sys
+import re
 import json
+import shutil
 import builtins
 import traceback
 import subprocess
@@ -90,7 +91,7 @@ def execute_python_code(code, timeout=10):
             return "Error: Unknown issue occurred during code execution."
     except multiprocessing.queues.Empty:
         return "Error: No output received from the executed code."
-    
+
 def execute_clojure_code(code, timeout=10):
     #print(f"Executing Clojure code: {code}")
     try:
@@ -109,6 +110,79 @@ def execute_clojure_code(code, timeout=10):
     except subprocess.TimeoutExpired:
         # Handle the timeout
         return "Error: Clojure program execution timed"
+    
+def extract_class_name(java_code):
+    """
+    Extracts the public class name from the Java code.
+    """
+    match = re.search(r"public\s+class\s+(\w+)", java_code)
+    if match:
+        return match.group(1)
+    raise ValueError("No public class found in the Java code")
+
+def execute_java_code(code, timeout=10):
+    try:
+        # Extract the class name from the Java code
+        class_name = extract_class_name(code)
+
+        # Create a temporary directory to store the Java file
+        temp_dir = "temp_java"
+        os.makedirs(temp_dir, exist_ok=True)
+
+        # Write the Java code to a file with the correct name
+        java_file_path = os.path.join(temp_dir, f"{class_name}.java")
+        with open(java_file_path, "w", encoding="utf-8") as file:
+            file.write(code)
+
+        # Compile the Java code
+        compile_result = subprocess.run(
+            ["javac", java_file_path],  # Compile the Java file
+            capture_output=True,        # Capture stdout and stderr
+            text=True                   # Return output as a string
+        )
+
+        # Check if compilation was successful
+        if compile_result.returncode != 0:
+            print("Compilation Error:")
+            print(compile_result.stderr)
+            return "Error: Java compilation failed"
+
+        # Execute the compiled Java program
+        execute_result = subprocess.run(
+            ["java", "-cp", temp_dir, class_name],  # Run the compiled class
+            capture_output=True,                    # Capture stdout and stderr
+            text=True,                              # Return output as a string
+            timeout=timeout                         # Set a timeout
+        )
+
+        # Print the full stdout and stderr for debugging
+        #print("Full stdout:", execute_result.stdout)
+        #print("Full stderr:", execute_result.stderr)
+
+        # Capture the output
+        output = execute_result.stdout.strip()  # Remove any extra whitespace
+
+        # Clean up the temporary directory
+        for file_name in os.listdir(temp_dir):
+            file_path = os.path.join(temp_dir, file_name)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)  # Delete the file
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)  # Delete the directory
+            except Exception as e:
+                print(f"Failed to delete {file_path}. Reason: {e}")
+
+        os.rmdir(temp_dir)  # Remove the now-empty directory
+
+        return output
+
+    except subprocess.TimeoutExpired:
+        # Handle the timeout
+        return "Error: Java program execution timed out"
+    except ValueError as e:
+        # Handle the case where no public class is found
+        return f"Error: {str(e)}"
 
 def process_solutions(model_name, language, max_problem_number):
     results_dir = os.path.join('solutions', model_name, language)
@@ -137,6 +211,8 @@ def process_solutions(model_name, language, max_problem_number):
             output = execute_python_code(code)
         if language == 'clojure':
             output = execute_clojure_code(code)
+        if language == 'java':
+            output = execute_java_code(code)
        
         # if the output has several lines, we only want the last one
         #print(f"Executed {solution_code_path}, raw output:{output}")
