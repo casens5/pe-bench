@@ -1,4 +1,10 @@
+endpoints/OpenAI_GPT-3.5-Turbo.json
+endpoints/OpenAI_GPT-4o-Mini.json
+endpoints/OpenAI_GPT-4o.json
+endpoints/OpenAI_GPT-o1-Mini.json
+endpoints/OpenAI_GPT-o1.json
 .DS_Store
-problems/*
-solutions/*
-temp_java
+endpoints/DeepSeek-V3.json
+problems
+solutions
+endpoints/OpenAI_GPT-o1-Preview.json

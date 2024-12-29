@@ -1,5 +1,6 @@
 import os
 import re
+import json
 from argparse import ArgumentParser
 
 # make a function which returns the extension of the language files for each language
@@ -77,10 +78,21 @@ def main():
     parser = ArgumentParser(description="Extract code blocks from Markdown files.")
     parser.add_argument('--model', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
     parser.add_argument('--language', required=False, default='python', help='Name of the language to use, default is python')
-
+    parser.add_argument('--endpoint', required=False, default='', help='Name of an <endpoint>.json file in the endpoints directory')
+    
     args = parser.parse_args()
     model_name = args.model
     language = args.language
+    endpoint_name = args.endpoint
+
+    if endpoint_name:
+        endpoint_path = os.path.join('endpoints', f"{endpoint_name}.json")
+        print(f"Using endpoint file {endpoint_path}")
+        if not os.path.exists(endpoint_path):
+            raise Exception(f"Endpoint file {endpoint_path} does not exist.")
+        with open(endpoint_path, 'r', encoding='utf-8') as file:
+            endpoint = json.load(file)
+            model_name = endpoint.get('name', model_name)
     process_markdown_files(model_name, language)
 
 if __name__ == "__main__":

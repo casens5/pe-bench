@@ -38,7 +38,7 @@ def process_problem_files(problems_dir, template_content, endpoint, language, ma
         except Exception as e:
             print(f"Failed to process problem {problem_number}: {e}")
 
-def ollama_client(endpoint, prompt='Hello World', temperature=0.0, max_tokens=8192):
+def ollama_client(endpoint, prompt='Hello World', temperature=0.0, max_tokens=4096):
 
     # Disable SSL warnings
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -53,13 +53,23 @@ def ollama_client(endpoint, prompt='Hello World', temperature=0.0, max_tokens=81
     }
     if endpoint.get("key", ""):
         headers['Authorization'] = 'Bearer ' + endpoint["key"]
+        stoptokens = []
+
+    modelname = endpoint["model"]
+    messages = []
+    # o1 has special requirements
+    if not modelname.startswith("o1"):
+        messages.append({"content": "You are a helpful assistant", "role": "system"})
+    else:
+        temperature = 1.0 # o1 models need temperature 1.0
+    messages.append({"role": "user", "content": prompt})
 
     payload = {
-        "model": endpoint["model"],
-        "messages": [{"content": "You are a helpful assistant", "role": "system"}, {"role": "user", "content": prompt}],
+        "model": modelname,
+        "messages": messages,
         "stop": stoptokens,
         "temperature": temperature,
-        "max_tokens": max_tokens,
+        #"max_tokens": max_tokens,
         "max_completion_tokens": max_tokens,
         "response_format": { "type": "text" },
         "stream": False
@@ -83,6 +93,7 @@ def ollama_client(endpoint, prompt='Hello World', temperature=0.0, max_tokens=81
     # Parse the response
     try:
         data = response.json()
+        #print(data)
         choices = data.get('choices', [])
         if len(choices) == 0:
             raise Exception("No response from the API.")
@@ -120,6 +131,7 @@ def main():
     endpoint = {}
     if endpoint_name:
         endpoint_path = os.path.join('endpoints', f"{endpoint_name}.json")
+        print(f"Using endpoint file {endpoint_path}")
         if not os.path.exists(endpoint_path):
             raise Exception(f"Endpoint file {endpoint_path} does not exist.")
         with open(endpoint_path, 'r', encoding='utf-8') as file:

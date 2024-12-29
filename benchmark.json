@@ -7,11 +7,25 @@
         "clojure-100": 5.92,
         "java-100": 16.95
     },
+    "GPT-4o": {
+        "_context_size": 128,
+        "_quantization_level": 16,
+        "python-100": 15.05,
+        "java-100": 13.87,
+        "clojure-100": 8.24
+    },
     "athene-v2:72b-q8_0": {
         "_context_size": 128,
         "_parameter_size": 72.7,
         "_quantization_level": 8,
+        "java-100": 10.15,
         "python-100": 12.7
+    },
+    "qwen2.5-coder:32b-instruct-q8_0": {
+        "_context_size": 32,
+        "_parameter_size": 32.8,
+        "_quantization_level": 8,
+        "python-100": 11.23
     },
     "qwen2.5:72b-instruct-q8_0": {
         "_context_size": 128,
@@ -19,16 +33,34 @@
         "_quantization_level": 8,
         "python-100": 11.01
     },
+    "GPT-4o-Mini": {
+        "_context_size": 128,
+        "_publication_date": "2024-12-17",
+        "_quantization_level": 16,
+        "python-100": 10.71,
+        "java-100": 7.36,
+        "clojure-100": 1.93
+    },
     "qwen2.5-coder:14b-instruct-q8_0": {
         "_context_size": 128,
         "_parameter_size": 14.8,
         "_quantization_level": 8,
+        "java-100": 7.35,
         "python-100": 9.7
+    },
+    "GPT-3.5-Turbo": {
+        "_context_size": 16,
+        "_parameter_size": 175.0,
+        "_quantization_level": 16,
+        "python-100": 9.02,
+        "java-100": 7.28,
+        "clojure-100": 0.5
     },
     "yi-coder:9b-chat-q8_0": {
         "_context_size": 128,
         "_parameter_size": 8.8,
         "_quantization_level": 8,
+        "java-100": 6.77,
         "python-100": 8.57
     },
     "vanilj/Phi-4:Q8_0": {
@@ -54,6 +86,12 @@
         "_parameter_size": 70.6,
         "_quantization_level": 8,
         "python-100": 6.6
+    },
+    "llama3.3:70b-instruct-q8_0": {
+        "_context_size": 128,
+        "_parameter_size": 70.6,
+        "_quantization_level": 8,
+        "python-100": 6.46
     },
     "qwen2.5:7b-instruct-q8_0": {
         "_context_size": 128,
@@ -103,6 +141,12 @@
         "_quantization_level": 8,
         "python-100": 5.18
     },
+    "qwq:32b-preview-q8_0": {
+        "_context_size": 32,
+        "_parameter_size": 32.8,
+        "_quantization_level": 8,
+        "python-100": 4.89
+    },
     "opencoder:8b-instruct-q8_0": {
         "_context_size": 8,
         "_parameter_size": 7.8,
@@ -126,6 +170,12 @@
         "_parameter_size": 8.0,
         "_quantization_level": 8,
         "python-100": 3.64
+    },
+    "phi3:14b-medium-128k-instruct-q8_0": {
+        "_context_size": 128,
+        "_parameter_size": 14.0,
+        "_quantization_level": 8,
+        "python-100": 3.59
     },
     "exaone3.5:7.8b-instruct-q8_0": {
         "_context_size": 32,
@@ -272,31 +322,13 @@
         "python-100": 0.13
     },
     "deepseek-coder-v2:236b-instruct-q2_K": {
+        "_context_size": 128,
         "_parameter_size": 235.7,
         "_quantization_level": 2
     },
     "deepseek-coder-v2:16b-lite-instruct-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 15.7,
-        "_quantization_level": 8
-    },
-    "llama3.3:70b-instruct-q8_0": {
-        "_parameter_size": 70.6,
-        "_quantization_level": 8
-    },
-    "Bio-Medical-Llama-3-8B-GGUF:Q8_0": {
-        "_parameter_size": 8.0,
-        "_quantization_level": 8
-    },
-    "qwen2.5-coder:32b-instruct-q8_0": {
-        "_parameter_size": 32.8,
-        "_quantization_level": 8
-    },
-    "qwq:32b-preview-q8_0": {
-        "_parameter_size": 32.8,
-        "_quantization_level": 8
-    },
-    "phi3:14b-medium-128k-instruct-q8_0": {
-        "_parameter_size": 14.0,
         "_quantization_level": 8
     }
 }

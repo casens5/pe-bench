@@ -231,6 +231,7 @@ def main():
     parser = ArgumentParser(description="Execute solutions and store results in a JSON file.")
     parser.add_argument('--model', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
     parser.add_argument('--language', required=False, default='python', help='Name of the programming language to use, default is python')
+    parser.add_argument('--endpoint', required=False, default='', help='Name of an <endpoint>.json file in the endpoints directory')
     parser.add_argument('--n100', action='store_true', help='only 100 problems') # this is the default
     parser.add_argument('--n200', action='store_true', help='only 200 problems')
     parser.add_argument('--n400', action='store_true', help='only 400 problems')
@@ -244,6 +245,15 @@ def main():
     if args.n200: max_problem_number = 200
     if args.n400: max_problem_number = 400
     if args.nall: max_problem_number = 9999
+    endpoint_name = args.endpoint
+    if endpoint_name:
+        endpoint_path = os.path.join('endpoints', f"{endpoint_name}.json")
+        print(f"Using endpoint file {endpoint_path}")
+        if not os.path.exists(endpoint_path):
+            raise Exception(f"Endpoint file {endpoint_path} does not exist.")
+        with open(endpoint_path, 'r', encoding='utf-8') as file:
+            endpoint = json.load(file)
+            model_name = endpoint.get('name', model_name)
 
     solutions = process_solutions(model_name, language, max_problem_number)
 

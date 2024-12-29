@@ -4,24 +4,42 @@ import requests
 import urllib3
 from argparse import ArgumentParser
 
-def test(model_name, language, skip_existing, max_problem_number=100):
+def test(endpoint_name, model_name, language, skip_existing, max_problem_number=100):
     # call inference.py
-    if skip_existing:
-        if max_problem_number == 200:
-            os.system(f"python3 inference.py --model {model_name} --language {language} --n200 --skip_existing")
+    if endpoint_name:
+        if skip_existing:
+            if max_problem_number == 200:
+                os.system(f"python3 inference.py --endpoint {endpoint_name} --language {language} --n200 --skip_existing")
+            else:
+                os.system(f"python3 inference.py --endpoint {endpoint_name} --language {language} --skip_existing")
         else:
-            os.system(f"python3 inference.py --model {model_name} --language {language} --skip_existing")
+            if max_problem_number == 200:
+                os.system(f"python3 inference.py --endpoint {endpoint_name} --language {language} --n200")
+            else:
+                os.system(f"python3 inference.py --endpoint {endpoint_name} --language {language}")
     else:
-        if max_problem_number == 200:
-            os.system(f"python3 inference.py --model {model_name} --language {language} --n200")
+        if skip_existing:
+            if max_problem_number == 200:
+                os.system(f"python3 inference.py --model {model_name} --language {language} --n200 --skip_existing")
+            else:
+                os.system(f"python3 inference.py --model {model_name} --language {language} --skip_existing")
         else:
-            os.system(f"python3 inference.py --model {model_name} --language {language}")
+            if max_problem_number == 200:
+                os.system(f"python3 inference.py --model {model_name} --language {language} --n200")
+            else:
+                os.system(f"python3 inference.py --model {model_name} --language {language}")
 
     # call codeextraction.py
-    os.system(f"python3 codeextraction.py --model {model_name} --language {language}")
+    if endpoint_name:
+        os.system(f"python3 codeextraction.py --endpoint {endpoint_name} --language {language}")
+    else:
+        os.system(f"python3 codeextraction.py --model {model_name} --language {language}")
 
     # call execute.py
-    os.system(f"python3 execute.py --model {model_name} --language {language}")
+    if endpoint_name:
+        os.system(f"python3 execute.py --endpoint {endpoint_name} --language {language}")
+    else:
+        os.system(f"python3 execute.py --model {model_name} --language {language}")
 
 def ollama_list(api_base='http://localhost:11434'):
     # call api http://localhost:11434/api/tags with http get request
@@ -60,6 +78,7 @@ def main():
     parser.add_argument('--model', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
     parser.add_argument('--language', required=False, default='python', help='Name of the language to use, default is python')
     parser.add_argument('--skip_existing', action='store_true', help='if set, skip problems that already have a solution')
+    parser.add_argument('--endpoint', required=False, default='', help='Name of an <endpoint>.json file in the endpoints directory')
     parser.add_argument('--n100', action='store_true', help='only 100 problems') # this is the default
     parser.add_argument('--n200', action='store_true', help='only 200 problems')
     parser.add_argument('--n400', action='store_true', help='only 400 problems')
@@ -75,8 +94,12 @@ def main():
     if args.nall: max_problem_number = 9999
     bench_name = f"{language}-{max_problem_number}"
     skip_existing = args.skip_existing
+    endpoint_name = args.endpoint
 
     if args.allmodels:
+        if endpoint_name:
+            raise Exception("The --allmodels option cannot be used in combination with --endpoint.")
+        
         # loop over all models provided by ollama and run those which are missing in benchmark.json
         with open('benchmark.json', 'r', encoding='utf-8') as json_file:
             benchmark = json.load(json_file)
@@ -91,7 +114,7 @@ def main():
             # add metadata to benchmark.json
             if not model in benchmark or not bench_name in benchmark[model]:
                 # run the model; this writes a news entry to benchmark.json
-                test(model, language, skip_existing, max_problem_number)
+                test(endpoint_name, model, language, skip_existing, max_problem_number)
                 # load benchmark.json again because the test has updated it
                 with open('benchmark.json', 'r', encoding='utf-8') as json_file:
                     benchmark = json.load(json_file)
@@ -110,7 +133,7 @@ def main():
             with open('benchmark.json', 'w', encoding='utf-8') as json_file:
                 json.dump(benchmark, json_file, indent=4)
     else:
-        test(model_name, language, skip_existing)
+        test(endpoint_name, model_name, language, skip_existing)
 
 if __name__ == "__main__":
     main()
