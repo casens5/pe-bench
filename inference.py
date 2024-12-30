@@ -53,7 +53,6 @@ def ollama_client(endpoint, prompt='Hello World', temperature=0.0, max_tokens=40
     }
     if endpoint.get("key", ""):
         headers['Authorization'] = 'Bearer ' + endpoint["key"]
-        stoptokens = []
 
     modelname = endpoint["model"]
     messages = []
@@ -64,16 +63,22 @@ def ollama_client(endpoint, prompt='Hello World', temperature=0.0, max_tokens=40
         temperature = 1.0 # o1 models need temperature 1.0
     messages.append({"role": "user", "content": prompt})
 
+    if modelname.startswith("o1") or modelname.startswith("4o"):
+        stoptokens = []
+
     payload = {
         "model": modelname,
         "messages": messages,
-        "stop": stoptokens,
         "temperature": temperature,
-        #"max_tokens": max_tokens,
-        "max_completion_tokens": max_tokens,
         "response_format": { "type": "text" },
         "stream": False
     }
+    if len(stoptokens) > 0:
+        payload["stop"] = stoptokens
+    if modelname.startswith("o1"):
+        payload["max_completion_tokens"] = max_tokens
+    else:
+        payload["max_tokens"] = max_tokens
 
     try:
         response = requests.post(endpoint["endpoint"], headers=headers, json=payload, verify=False)
