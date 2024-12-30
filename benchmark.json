@@ -330,5 +330,48 @@
         "_context_size": 128,
         "_parameter_size": 15.7,
         "_quantization_level": 8
+    },
+    "qwen2.5:32b-instruct-q8_0": {
+        "_parameter_size": 32.8,
+        "_quantization_level": 8
+    },
+    "qwen2.5:14b-instruct-q8_0": {
+        "_parameter_size": 14.8,
+        "_quantization_level": 8
+    },
+    "qwen2.5-coder:0.5b": {
+        "_parameter_size": 494.03,
+        "_quantization_level": 8
+    },
+    "athene-v2:latest": {
+        "_parameter_size": 72.7,
+        "_quantization_level": 4
+    },
+    "hf.co/attashe/phi-4-abliterated-Q4_K_M-GGUF:latest": {
+        "_parameter_size": 14.7
+    },
+    "llama3.3:latest": {
+        "_parameter_size": 70.6,
+        "_quantization_level": 4
+    },
+    "Bio-Medical-Llama-3-8B-GGUF:Q8_0": {
+        "_parameter_size": 8.0,
+        "_quantization_level": 8
+    },
+    "qwen2:0.5b-instruct-q8_0": {
+        "_parameter_size": 494.03,
+        "_quantization_level": 8
+    },
+    "starcoder2:3b": {
+        "_parameter_size": 3.0,
+        "_quantization_level": 4
+    },
+    "qwen2.5-coder:32b-instruct-q4_K_M": {
+        "_parameter_size": 32.8,
+        "_quantization_level": 4
+    },
+    "qwen2.5-coder:14b-instruct-q4_K_M": {
+        "_parameter_size": 14.8,
+        "_quantization_level": 4
     }
 }
