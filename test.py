@@ -105,6 +105,7 @@ def main():
             benchmark = json.load(json_file)
         # load models from ollama
         models = ollama_list()
+        print(f"Found {len(models)} models in ollama.")
         for model in models:
             # in every loop we load the benchmark.json again because it might have been updated
             with open('benchmark.json', 'r', encoding='utf-8') as json_file:

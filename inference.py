@@ -101,7 +101,7 @@ def ollama_client(endpoint, prompt='Hello World', temperature=0.0, max_tokens=40
         #print(data)
         choices = data.get('choices', [])
         if len(choices) == 0:
-            raise Exception("No response from the API.")
+            raise Exception("No response from the API: " + str(data))
         message = choices[0].get('message', {})
         content = message.get('content', '')
         return content
@@ -130,6 +130,8 @@ def main():
     if args.n200: max_problem_number = 200
     if args.n400: max_problem_number = 400
     if args.nall: max_problem_number = 9999
+
+    print(f"Inference: Using model {model_name} and language {language}")
 
     # construct the endpoint object
     endpoint_name = args.endpoint
