@@ -23,7 +23,7 @@ The computed Benchmark "PE-Bench-Python-100" is the super-human performance fact
 | athene-v2:72b-q8_0                                 |                72.7 |                   8 |                128 |                12.7 |             10.15 |
 | athene-v2:latest                                   |                72.7 |                   4 |                128 |               12.36 |                   |
 | qwen2.5-coder:32b-instruct-q8_0                    |                32.8 |                   8 |                 32 |               11.23 |              9.94 |
-| qwen2.5:72b-instruct-q8_0                          |                72.7 |                   8 |                128 |               11.01 |                   |
+| qwen2.5:72b-instruct-q8_0                          |                72.7 |                   8 |                128 |               11.01 |              10.5 |
 | GPT-4o-Mini                                        |                     |                  16 |                128 |               10.71 |              7.36 |
 | qwen2.5-coder:32b-instruct-q4_K_M                  |                32.8 |                   4 |                 32 |               10.46 |                   |
 | qwen2.5-coder:14b-instruct-q8_0                    |                14.8 |                   8 |                128 |                 9.7 |              7.35 |
@@ -33,53 +33,53 @@ The computed Benchmark "PE-Bench-Python-100" is the super-human performance fact
 | qwen2.5:14b-instruct-q8_0                          |                14.8 |                   8 |                 32 |                8.11 |                   |
 | qwen2.5-coder:14b-instruct-q4_K_M                  |                14.8 |                   4 |                128 |                7.98 |                   |
 | vanilj/Phi-4:Q8_0                                  |                14.7 |                   8 |                 16 |                7.81 |                   |
-| falcon3:10b-instruct-q8_0                          |                10.3 |                   8 |                 32 |                7.42 |                   |
+| falcon3:10b-instruct-q8_0                          |                10.3 |                   8 |                 32 |                7.42 |              5.14 |
 | tulu3:70b-q8_0                                     |                70.6 |                   8 |                128 |                7.34 |              4.61 |
 | tulu3:70b-q4_K_M                                   |                70.6 |                   4 |                128 |                 7.0 |                   |
-| llama3.1:70b-instruct-q8_0                         |                70.6 |                   8 |                128 |                 6.6 |                   |
-| llama3.3:70b-instruct-q8_0                         |                70.6 |                   8 |                128 |                6.46 |                   |
+| llama3.1:70b-instruct-q8_0                         |                70.6 |                   8 |                128 |                 6.6 |              5.36 |
+| llama3.3:70b-instruct-q8_0                         |                70.6 |                   8 |                128 |                6.46 |              8.06 |
 | qwen2.5:7b-instruct-q8_0                           |                 7.6 |                   8 |                128 |                 6.4 |                   |
 | hf.co/bartowski/Anubis-70B-v1-GGUF:Q4_K_M          |                70.6 |                   4 |                128 |                6.14 |              6.49 |
 | qwen2.5-coder:7b-instruct-q8_0                     |                 7.6 |                   8 |                128 |                6.13 |                   |
-| nemotron:70b-instruct-q8_0                         |                70.6 |                   8 |                128 |                6.01 |                   |
+| nemotron:70b-instruct-q8_0                         |                70.6 |                   8 |                128 |                6.01 |              4.05 |
 | llama3.3:70b-instruct-q4_K_M                       |                70.6 |                   4 |                    |                5.95 |                   |
 | llama3.3:latest                                    |                70.6 |                   4 |                128 |                5.95 |                   |
 | llama3.1:70b-instruct-q4_K_M                       |                70.6 |                   4 |                    |                5.94 |                   |
 | yi-coder:9b-chat-q4_K_M                            |                 8.8 |                   4 |                128 |                5.87 |              6.04 |
 | nemotron:70b-instruct-q4_K_M                       |                70.6 |                   4 |                    |                5.72 |                   |
 | qwen2-math:72b-instruct-q8_0                       |                72.7 |                   8 |                  4 |                5.64 |              6.67 |
-| falcon3:7b-instruct-q8_0                           |                 7.5 |                   8 |                 32 |                5.57 |                   |
+| falcon3:7b-instruct-q8_0                           |                 7.5 |                   8 |                 32 |                5.57 |              3.91 |
 | gemma2:27b-instruct-q8_0                           |                27.2 |                   8 |                  8 |                5.18 |               3.3 |
-| qwq:32b-preview-q8_0                               |                32.8 |                   8 |                 32 |                4.89 |                   |
-| opencoder:8b-instruct-q8_0                         |                 7.8 |                   8 |                  8 |                4.53 |                   |
+| qwq:32b-preview-q8_0                               |                32.8 |                   8 |                 32 |                4.89 |              2.93 |
+| opencoder:8b-instruct-q8_0                         |                 7.8 |                   8 |                  8 |                4.53 |              3.22 |
 | hf.co/bartowski/Yi-1.5-34B-Chat-GGUF:Q8_0          |                34.4 |                   8 |                  4 |                4.36 |              1.49 |
 | qwen2.5-coder:3b-instruct-q8_0                     |                 3.1 |                   8 |                 32 |                4.32 |                   |
 | tulu3:8b-q8_0                                      |                 8.0 |                   8 |                128 |                3.64 |              1.06 |
-| phi3:14b-medium-128k-instruct-q8_0                 |                14.0 |                   8 |                128 |                3.59 |                   |
+| phi3:14b-medium-128k-instruct-q8_0                 |                14.0 |                   8 |                128 |                3.59 |              1.55 |
 | exaone3.5:7.8b-instruct-q8_0                       |                 7.8 |                   8 |                 32 |                3.55 |                   |
-| llama3.1:8b-instruct-q8_0                          |                 8.0 |                   8 |                128 |                3.32 |                   |
+| llama3.1:8b-instruct-q8_0                          |                 8.0 |                   8 |                128 |                3.32 |              1.78 |
 | exaone3.5:32b-instruct-q8_0                        |                32.0 |                   8 |                 32 |                2.96 |              3.82 |
 | qwen2.5:3b-instruct-q8_0                           |                 3.1 |                   8 |                128 |                2.87 |                   |
-| granite3.1-dense:8b-instruct-q8_0                  |                 8.2 |                   8 |                128 |                 2.8 |                   |
+| granite3.1-dense:8b-instruct-q8_0                  |                 8.2 |                   8 |                128 |                 2.8 |              1.55 |
 | exaone3.5:2.4b-instruct-q8_0                       |                 2.7 |                   8 |                 32 |                2.53 |                   |
 | qwen2-math:7b-instruct-q8_0                        |                 7.6 |                   8 |                  4 |                2.49 |              0.95 |
 | gemma2:9b-instruct-q8_0                            |                 9.2 |                   8 |                  8 |                2.46 |              1.55 |
 | yi-coder:1.5b-chat-q8_0                            |                 1.5 |                   8 |                128 |                 2.3 |                   |
-| opencoder:1.5b-instruct-q8_0                       |                 1.9 |                   8 |                  4 |                 2.2 |                   |
-| llama3.2:latest                                    |                3.21 |                   4 |                128 |                2.14 |                   |
+| opencoder:1.5b-instruct-q8_0                       |                 1.9 |                   8 |                  4 |                 2.2 |              1.47 |
+| llama3.2:latest                                    |                3.21 |                   4 |                128 |                2.14 |              0.18 |
 | qwen2.5:1.5b-instruct-q8_0                         |                 1.5 |                   8 |                128 |                1.98 |                   |
 | qwen2.5-coder:1.5b-instruct-q8_0                   |                 1.5 |                   8 |                 32 |                1.95 |                   |
-| falcon3:3b-instruct-q8_0                           |                 3.2 |                   8 |                 32 |                1.89 |                   |
+| falcon3:3b-instruct-q8_0                           |                 3.2 |                   8 |                 32 |                1.89 |              1.09 |
 | codegemma:7b-instruct-q8_0                         |                 9.0 |                   8 |                  8 |                1.81 |              1.27 |
-| granite3.1-dense:2b-instruct-q8_0                  |                 2.5 |                   8 |                128 |                1.07 |                   |
+| granite3.1-dense:2b-instruct-q8_0                  |                 2.5 |                   8 |                128 |                1.07 |              0.11 |
 | Bio-Medical-Llama-3-8B-GGUF:Q8_0                   |                 8.0 |                   8 |                  8 |                1.04 |                   |
 | qwen2.5:0.5b-instruct-q8_0                         |                 0.5 |                   8 |                128 |                1.01 |                   |
 | granite3.1-moe:3b-instruct-q8_0                    |                 3.3 |                   8 |                128 |                0.78 |              0.03 |
 | qwen2-math:1.5b-instruct-q8_0                      |                 1.5 |                   8 |                  4 |                0.61 |                   |
 | gemma2:2b-instruct-q8_0                            |                 2.6 |                   8 |                  8 |                0.39 |              0.22 |
-| falcon3:1b-instruct-q8_0                           |                 1.7 |                   8 |                  8 |                0.25 |                   |
-| granite3.1-moe:1b-instruct-q8_0                    |                 1.3 |                   8 |                128 |                0.24 |                   |
-| llama3.2:1b-instruct-q8_0                          |                 1.2 |                   8 |                128 |                0.23 |                   |
+| falcon3:1b-instruct-q8_0                           |                 1.7 |                   8 |                  8 |                0.25 |               0.0 |
+| granite3.1-moe:1b-instruct-q8_0                    |                 1.3 |                   8 |                128 |                0.24 |               0.0 |
+| llama3.2:1b-instruct-q8_0                          |                 1.2 |                   8 |                128 |                0.23 |              0.06 |
 | qwen2.5-coder:0.5b-instruct-q8_0                   |                 0.5 |                   8 |                 32 |                0.13 |                   |
 | qwen2.5-coder:0.5b                                 |                 0.5 |                   8 |                 32 |                0.11 |                   |
 | qwen2:0.5b-instruct-q8_0                           |              494.03 |                   8 |                 32 |                0.07 |                   |
