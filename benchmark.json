@@ -18,6 +18,7 @@
         "_context_size": 128,
         "_parameter_size": 72.7,
         "_quantization_level": 4,
+        "java-100": 9.1,
         "python-100": 13.35
     },
     "athene-v2:72b-q8_0": {
@@ -31,6 +32,7 @@
         "_context_size": 128,
         "_parameter_size": 72.7,
         "_quantization_level": 4,
+        "java-100": 11.14,
         "python-100": 12.36
     },
     "qwen2.5-coder:32b-instruct-q8_0": {
@@ -58,6 +60,7 @@
         "_context_size": 32,
         "_parameter_size": 32.8,
         "_quantization_level": 4,
+        "java-100": 8.82,
         "python-100": 10.46
     },
     "qwen2.5-coder:14b-instruct-q8_0": {
@@ -71,6 +74,7 @@
         "_context_size": 32,
         "_parameter_size": 32.8,
         "_quantization_level": 8,
+        "java-100": 10.22,
         "python-100": 9.25
     },
     "GPT-3.5-Turbo": {
@@ -92,18 +96,21 @@
         "_context_size": 32,
         "_parameter_size": 14.8,
         "_quantization_level": 8,
+        "java-100": 4.14,
         "python-100": 8.11
     },
     "qwen2.5-coder:14b-instruct-q4_K_M": {
         "_context_size": 128,
         "_parameter_size": 14.8,
         "_quantization_level": 4,
+        "java-100": 7.28,
         "python-100": 7.98
     },
     "vanilj/Phi-4:Q8_0": {
         "_context_size": 16,
         "_parameter_size": 14.7,
         "_quantization_level": 8,
+        "java-100": 5.73,
         "python-100": 7.81
     },
     "falcon3:10b-instruct-q8_0": {
@@ -123,6 +130,7 @@
         "_context_size": 128,
         "_parameter_size": 70.6,
         "_quantization_level": 4,
+        "java-100": 4.68,
         "python-100": 7.0
     },
     "llama3.1:70b-instruct-q8_0": {
@@ -141,6 +149,7 @@
         "_context_size": 128,
         "_parameter_size": 7.6,
         "_quantization_level": 8,
+        "java-100": 3.6,
         "python-100": 6.4
     },
     "hf.co/bartowski/Anubis-70B-v1-GGUF:Q4_K_M": {
@@ -154,6 +163,7 @@
         "_context_size": 128,
         "_parameter_size": 7.6,
         "_quantization_level": 8,
+        "java-100": 4.4,
         "python-100": 6.13
     },
     "nemotron:70b-instruct-q8_0": {
@@ -165,17 +175,20 @@
     "llama3.3:70b-instruct-q4_K_M": {
         "_parameter_size": 70.6,
         "_quantization_level": 4,
+        "java-100": 5.25,
         "python-100": 5.95
     },
     "llama3.3:latest": {
         "_context_size": 128,
         "_parameter_size": 70.6,
         "_quantization_level": 4,
+        "java-100": 5.25,
         "python-100": 5.95
     },
     "llama3.1:70b-instruct-q4_K_M": {
         "_parameter_size": 70.6,
         "_quantization_level": 4,
+        "java-100": 4.98,
         "python-100": 5.94
     },
     "yi-coder:9b-chat-q4_K_M": {
@@ -188,6 +201,7 @@
     "nemotron:70b-instruct-q4_K_M": {
         "_parameter_size": 70.6,
         "_quantization_level": 4,
+        "java-100": 5.13,
         "python-100": 5.72
     },
     "qwen2-math:72b-instruct-q8_0": {
@@ -214,6 +228,7 @@
         "_context_size": 32,
         "_parameter_size": 32.8,
         "_quantization_level": 8,
+        "java-100": 2.94,
         "python-100": 4.89
     },
     "opencoder:8b-instruct-q8_0": {
@@ -233,6 +248,7 @@
         "_context_size": 32,
         "_parameter_size": 3.1,
         "_quantization_level": 8,
+        "java-100": 2.15,
         "python-100": 4.32
     },
     "tulu3:8b-q8_0": {
@@ -246,12 +262,14 @@
         "_context_size": 128,
         "_parameter_size": 14.0,
         "_quantization_level": 8,
+        "java-100": 1.55,
         "python-100": 3.59
     },
     "exaone3.5:7.8b-instruct-q8_0": {
         "_context_size": 32,
         "_parameter_size": 7.8,
         "_quantization_level": 8,
+        "java-100": 2.26,
         "python-100": 3.55
     },
     "llama3.1:8b-instruct-q8_0": {
@@ -271,18 +289,21 @@
         "_context_size": 128,
         "_parameter_size": 3.1,
         "_quantization_level": 8,
+        "java-100": 0.59,
         "python-100": 2.87
     },
     "granite3.1-dense:8b-instruct-q8_0": {
         "_context_size": 128,
         "_parameter_size": 8.2,
         "_quantization_level": 8,
+        "java-100": 1.55,
         "python-100": 2.8
     },
     "exaone3.5:2.4b-instruct-q8_0": {
         "_context_size": 32,
         "_parameter_size": 2.7,
         "_quantization_level": 8,
+        "java-100": 0.94,
         "python-100": 2.53
     },
     "qwen2-math:7b-instruct-q8_0": {
@@ -303,6 +324,7 @@
         "_context_size": 128,
         "_parameter_size": 1.5,
         "_quantization_level": 8,
+        "java-100": 1.17,
         "python-100": 2.3
     },
     "opencoder:1.5b-instruct-q8_0": {
@@ -315,18 +337,21 @@
         "_context_size": 128,
         "_parameter_size": 3.21,
         "_quantization_level": 4,
+        "java-100": 0.18,
         "python-100": 2.14
     },
     "qwen2.5:1.5b-instruct-q8_0": {
         "_context_size": 128,
         "_parameter_size": 1.5,
         "_quantization_level": 8,
+        "java-100": 0.82,
         "python-100": 1.98
     },
     "qwen2.5-coder:1.5b-instruct-q8_0": {
         "_context_size": 32,
         "_parameter_size": 1.5,
         "_quantization_level": 8,
+        "java-100": 0.9,
         "python-100": 1.95
     },
     "falcon3:3b-instruct-q8_0": {
@@ -346,18 +371,21 @@
         "_context_size": 128,
         "_parameter_size": 2.5,
         "_quantization_level": 8,
+        "java-100": 0.11,
         "python-100": 1.07
     },
     "Bio-Medical-Llama-3-8B-GGUF:Q8_0": {
         "_context_size": 8,
         "_parameter_size": 8.0,
         "_quantization_level": 8,
+        "java-100": 1.65,
         "python-100": 1.04
     },
     "qwen2.5:0.5b-instruct-q8_0": {
         "_context_size": 128,
         "_parameter_size": 0.5,
         "_quantization_level": 8,
+        "java-100": 0.0,
         "python-100": 1.01
     },
     "granite3.1-moe:3b-instruct-q8_0": {
@@ -371,6 +399,7 @@
         "_context_size": 4,
         "_parameter_size": 1.5,
         "_quantization_level": 8,
+        "java-100": 0.03,
         "python-100": 0.61
     },
     "gemma2:2b-instruct-q8_0": {
@@ -402,18 +431,21 @@
         "_context_size": 32,
         "_parameter_size": 0.5,
         "_quantization_level": 8,
+        "java-100": 0.01,
         "python-100": 0.13
     },
     "qwen2.5-coder:0.5b": {
         "_context_size": 32,
         "_parameter_size": 0.5,
         "_quantization_level": 8,
+        "java-100": 0.01,
         "python-100": 0.11
     },
     "qwen2:0.5b-instruct-q8_0": {
         "_context_size": 32,
         "_parameter_size": 494.03,
         "_quantization_level": 8,
+        "java-100": 0.0,
         "python-100": 0.07
     },
     "deepseek-coder-v2:236b-instruct-q2_K": {
@@ -435,6 +467,11 @@
         "_context_size": 16,
         "_parameter_size": 3.0,
         "_quantization_level": 4,
+        "java-100": 0.0,
         "python-100": 0.0
+    },
+    "openchat:7b-v3.5-q8_0": {
+        "_parameter_size": 7.0,
+        "_quantization_level": 8
     }
 }
