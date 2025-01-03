@@ -50,7 +50,7 @@ The computed Benchmark "PE-Bench-Python-100" is the super-human performance fact
 | qwen2-math:72b-instruct-q8_0                       |                72.7 |                   8 |                  4 |                5.64 |              6.67 |                      |
 | falcon3:7b-instruct-q8_0                           |                 7.5 |                   8 |                 32 |                5.57 |              3.91 |                      |
 | gemma2:27b-instruct-q8_0                           |                27.2 |                   8 |                  8 |                5.18 |               3.3 |                      |
-| qwq:32b-preview-q8_0                               |                32.8 |                   8 |                 32 |                4.89 |              2.94 |                      |
+| qwq:32b-preview-q8_0                               |                32.8 |                   8 |                 32 |                4.89 |              2.94 |                 0.54 |
 | opencoder:8b-instruct-q8_0                         |                 7.8 |                   8 |                  8 |                4.53 |              3.22 |                      |
 | hf.co/bartowski/Yi-1.5-34B-Chat-GGUF:Q8_0          |                34.4 |                   8 |                  4 |                4.36 |              1.49 |                      |
 | qwen2.5-coder:3b-instruct-q8_0                     |                 3.1 |                   8 |                 32 |                4.32 |              2.15 |                  0.2 |
@@ -67,22 +67,26 @@ The computed Benchmark "PE-Bench-Python-100" is the super-human performance fact
 | yi-coder:1.5b-chat-q8_0                            |                 1.5 |                   8 |                128 |                 2.3 |              1.17 |                  0.0 |
 | opencoder:1.5b-instruct-q8_0                       |                 1.9 |                   8 |                  4 |                 2.2 |              1.47 |                      |
 | llama3.2:latest                                    |                3.21 |                   4 |                128 |                2.14 |              0.18 |                  0.0 |
+| mixtral:8x7b-instruct-v0.1-q4_K_M                  |                46.7 |                   4 |                 32 |                 2.0 |              1.24 |                  0.0 |
 | qwen2.5:1.5b-instruct-q8_0                         |                 1.5 |                   8 |                128 |                1.98 |              0.82 |                 0.06 |
 | qwen2.5-coder:1.5b-instruct-q8_0                   |                 1.5 |                   8 |                 32 |                1.95 |               0.9 |                 0.03 |
 | falcon3:3b-instruct-q8_0                           |                 3.2 |                   8 |                 32 |                1.89 |              1.09 |                      |
 | codegemma:7b-instruct-q8_0                         |                 9.0 |                   8 |                  8 |                1.81 |              1.27 |                      |
+| openchat:7b-v3.5-q8_0                              |                 7.0 |                   8 |                    |                1.62 |              1.21 |                  0.0 |
 | granite3.1-dense:2b-instruct-q8_0                  |                 2.5 |                   8 |                128 |                1.07 |              0.11 |                  0.0 |
 | Bio-Medical-Llama-3-8B-GGUF:Q8_0                   |                 8.0 |                   8 |                  8 |                1.04 |              1.65 |                 0.03 |
 | qwen2.5:0.5b-instruct-q8_0                         |                 0.5 |                   8 |                128 |                1.01 |               0.0 |                  0.0 |
 | granite3.1-moe:3b-instruct-q8_0                    |                 3.3 |                   8 |                128 |                0.78 |              0.03 |                      |
 | qwen2-math:1.5b-instruct-q8_0                      |                 1.5 |                   8 |                  4 |                0.61 |              0.03 |                  0.0 |
+| smallthinker:3b-preview-q8_0                       |                 3.4 |                   8 |                    |                 0.6 |              0.19 |                 0.19 |
 | gemma2:2b-instruct-q8_0                            |                 2.6 |                   8 |                  8 |                0.39 |              0.22 |                      |
 | falcon3:1b-instruct-q8_0                           |                 1.7 |                   8 |                  8 |                0.25 |               0.0 |                      |
 | granite3.1-moe:1b-instruct-q8_0                    |                 1.3 |                   8 |                128 |                0.24 |               0.0 |                      |
 | llama3.2:1b-instruct-q8_0                          |                 1.2 |                   8 |                128 |                0.23 |              0.06 |                      |
+| smallthinker:3b-preview-q4_K_M                     |                 3.4 |                   4 |                    |                0.22 |              0.25 |                  0.0 |
 | qwen2.5-coder:0.5b-instruct-q8_0                   |                 0.5 |                   8 |                 32 |                0.13 |              0.01 |                  0.0 |
 | qwen2.5-coder:0.5b                                 |                 0.5 |                   8 |                 32 |                0.11 |              0.01 |                  0.0 |
-| qwen2:0.5b-instruct-q8_0                           |              494.03 |                   8 |                 32 |                0.07 |               0.0 |                      |
+| qwen2:0.5b-instruct-q8_0                           |              494.03 |                   8 |                 32 |                0.07 |               0.0 |                  0.0 |
 | starcoder2:3b                                      |                 3.0 |                   4 |                 16 |                 0.0 |               0.0 |                      |
 
 This shows that even very small models like the llama3.2 model has a two-fold super-human performance at solving those problems.
