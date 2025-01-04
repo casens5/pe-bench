@@ -199,13 +199,6 @@
         "python-100": 6.01
     },
     "llama3.3:70b-instruct-q4_K_M": {
-        "_parameter_size": 70.6,
-        "_quantization_level": 4,
-        "clojure-100": 2.21,
-        "java-100": 5.25,
-        "python-100": 5.95
-    },
-    "llama3.3:latest": {
         "_context_size": 128,
         "_parameter_size": 70.6,
         "_quantization_level": 4,
@@ -214,6 +207,7 @@
         "python-100": 5.95
     },
     "llama3.1:70b-instruct-q4_K_M": {
+        "_context_size": 128,
         "_parameter_size": 70.6,
         "_quantization_level": 4,
         "clojure-100": 0.6,
@@ -229,6 +223,7 @@
         "python-100": 5.87
     },
     "nemotron:70b-instruct-q4_K_M": {
+        "_context_size": 128,
         "_parameter_size": 70.6,
         "_quantization_level": 4,
         "clojure-100": 0.83,
@@ -436,6 +431,7 @@
         "python-100": 1.81
     },
     "openchat:7b-v3.5-q8_0": {
+        "_context_size": 8,
         "_parameter_size": 7.0,
         "_quantization_level": 8,
         "clojure-100": 0.0,
@@ -443,6 +439,7 @@
         "python-100": 1.62
     },
     "mixtral:8x7b-instruct-v0.1-q8_0": {
+        "_context_size": 32,
         "_parameter_size": 46.7,
         "_quantization_level": 8,
         "clojure-100": 0.0,
@@ -490,6 +487,7 @@
         "python-100": 0.61
     },
     "smallthinker:3b-preview-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 3.4,
         "_quantization_level": 8,
         "clojure-100": 0.19,
@@ -529,6 +527,7 @@
         "python-100": 0.23
     },
     "smallthinker:3b-preview-q4_K_M": {
+        "_context_size": 128,
         "_parameter_size": 3.4,
         "_quantization_level": 4,
         "clojure-100": 0.0,
@@ -578,6 +577,7 @@
         "_context_size": 16,
         "_parameter_size": 3.0,
         "_quantization_level": 4,
+        "clojure-100": 0.0,
         "java-100": 0.0,
         "python-100": 0.0
     }

@@ -42,11 +42,10 @@ The computed Benchmark "PE-Bench-Python-100" is the super-human performance fact
 | hf.co/bartowski/Anubis-70B-v1-GGUF:Q4_K_M          |                70.6 |                   4 |                128 |                6.14 |              6.49 |                 1.36 |
 | qwen2.5-coder:7b-instruct-q8_0                     |                 7.6 |                   8 |                128 |                6.13 |               4.4 |                 0.63 |
 | nemotron:70b-instruct-q8_0                         |                70.6 |                   8 |                128 |                6.01 |              4.05 |                 1.13 |
-| llama3.3:70b-instruct-q4_K_M                       |                70.6 |                   4 |                    |                5.95 |              5.25 |                 2.21 |
-| llama3.3:latest                                    |                70.6 |                   4 |                128 |                5.95 |              5.25 |                 2.21 |
-| llama3.1:70b-instruct-q4_K_M                       |                70.6 |                   4 |                    |                5.94 |              4.98 |                  0.6 |
+| llama3.3:70b-instruct-q4_K_M                       |                70.6 |                   4 |                128 |                5.95 |              5.25 |                 2.21 |
+| llama3.1:70b-instruct-q4_K_M                       |                70.6 |                   4 |                128 |                5.94 |              4.98 |                  0.6 |
 | yi-coder:9b-chat-q4_K_M                            |                 8.8 |                   4 |                128 |                5.87 |              6.04 |                 0.34 |
-| nemotron:70b-instruct-q4_K_M                       |                70.6 |                   4 |                    |                5.72 |              5.13 |                 0.83 |
+| nemotron:70b-instruct-q4_K_M                       |                70.6 |                   4 |                128 |                5.72 |              5.13 |                 0.83 |
 | qwen2-math:72b-instruct-q8_0                       |                72.7 |                   8 |                  4 |                5.64 |              6.67 |                  1.3 |
 | falcon3:7b-instruct-q8_0                           |                 7.5 |                   8 |                 32 |                5.57 |              3.91 |                 0.36 |
 | gemma2:27b-instruct-q8_0                           |                27.2 |                   8 |                  8 |                5.18 |               3.3 |                 0.98 |
@@ -72,23 +71,23 @@ The computed Benchmark "PE-Bench-Python-100" is the super-human performance fact
 | qwen2.5-coder:1.5b-instruct-q8_0                   |                 1.5 |                   8 |                 32 |                1.95 |               0.9 |                 0.03 |
 | falcon3:3b-instruct-q8_0                           |                 3.2 |                   8 |                 32 |                1.89 |              1.09 |                 0.04 |
 | codegemma:7b-instruct-q8_0                         |                 9.0 |                   8 |                  8 |                1.81 |              1.27 |                  0.0 |
-| openchat:7b-v3.5-q8_0                              |                 7.0 |                   8 |                    |                1.62 |              1.21 |                  0.0 |
-| mixtral:8x7b-instruct-v0.1-q8_0                    |                46.7 |                   8 |                    |                1.44 |              0.65 |                  0.0 |
+| openchat:7b-v3.5-q8_0                              |                 7.0 |                   8 |                  8 |                1.62 |              1.21 |                  0.0 |
+| mixtral:8x7b-instruct-v0.1-q8_0                    |                46.7 |                   8 |                 32 |                1.44 |              0.65 |                  0.0 |
 | granite3.1-dense:2b-instruct-q8_0                  |                 2.5 |                   8 |                128 |                1.07 |              0.11 |                  0.0 |
 | Bio-Medical-Llama-3-8B-GGUF:Q8_0                   |                 8.0 |                   8 |                  8 |                1.04 |              1.65 |                 0.03 |
 | qwen2.5:0.5b-instruct-q8_0                         |                 0.5 |                   8 |                128 |                1.01 |               0.0 |                  0.0 |
 | granite3.1-moe:3b-instruct-q8_0                    |                 3.3 |                   8 |                128 |                0.78 |              0.03 |                 0.03 |
 | qwen2-math:1.5b-instruct-q8_0                      |                 1.5 |                   8 |                  4 |                0.61 |              0.03 |                  0.0 |
-| smallthinker:3b-preview-q8_0                       |                 3.4 |                   8 |                    |                 0.6 |              0.19 |                 0.19 |
+| smallthinker:3b-preview-q8_0                       |                 3.4 |                   8 |                128 |                 0.6 |              0.19 |                 0.19 |
 | gemma2:2b-instruct-q8_0                            |                 2.6 |                   8 |                  8 |                0.39 |              0.22 |                  0.0 |
 | falcon3:1b-instruct-q8_0                           |                 1.7 |                   8 |                  8 |                0.25 |               0.0 |                  0.0 |
 | granite3.1-moe:1b-instruct-q8_0                    |                 1.3 |                   8 |                128 |                0.24 |               0.0 |                  0.0 |
 | llama3.2:1b-instruct-q8_0                          |                 1.2 |                   8 |                128 |                0.23 |              0.06 |                  0.0 |
-| smallthinker:3b-preview-q4_K_M                     |                 3.4 |                   4 |                    |                0.22 |              0.25 |                  0.0 |
+| smallthinker:3b-preview-q4_K_M                     |                 3.4 |                   4 |                128 |                0.22 |              0.25 |                  0.0 |
 | qwen2.5-coder:0.5b-instruct-q8_0                   |                 0.5 |                   8 |                 32 |                0.13 |              0.01 |                  0.0 |
 | qwen2.5-coder:0.5b                                 |                 0.5 |                   8 |                 32 |                0.11 |              0.01 |                  0.0 |
 | qwen2:0.5b-instruct-q8_0                           |              494.03 |                   8 |                 32 |                0.07 |               0.0 |                  0.0 |
-| starcoder2:3b                                      |                 3.0 |                   4 |                 16 |                 0.0 |               0.0 |                      |
+| starcoder2:3b                                      |                 3.0 |                   4 |                 16 |                 0.0 |               0.0 |                  0.0 |
 
 This shows that even very small models like the llama3.2 model has a two-fold super-human performance at solving those problems.
 
