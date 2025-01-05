@@ -184,6 +184,58 @@ def execute_java_code(code, timeout=10):
         # Handle the case where no public class is found
         return f"Error: {str(e)}"
 
+def execute_rust_code(code, timeout=10):
+    #print(f"Executing Rust code: {code}")
+    try:
+
+        # Create a temporary directory to store the Rust file
+        temp_dir = "temp_rust"
+        os.makedirs(temp_dir, exist_ok=True)
+
+        # Write the Rust code to a file
+        rust_file_path = os.path.join(temp_dir, "rust.rs")
+        with open(rust_file_path, "w", encoding="utf-8") as file:
+            file.write(code)
+
+        # make the binary path; thats the same as the filename without the extension
+        binary_path = os.path.join(temp_dir, "rust")
+
+        # Compile the Rust program using the Rust compiler
+        compile_result = subprocess.run(
+            ["rustc", "-A", "warnings", rust_file_path, "-o", binary_path]
+        )
+
+        # Check if the compilation was successful
+        if compile_result.returncode != 0:
+            # Clean up temporary files
+            os.remove(rust_file_path)
+            os.rmdir(temp_dir)
+            return f"Error: Rust compilation failed: {compile_result.stderr}"
+        
+        # Execute the Rust program
+        try:
+            exec_result = subprocess.run(
+                [binary_path],
+                capture_output=True,  # Capture stdout and stderr
+                text=True,            # Return output as a string
+                timeout=timeout       # Set a timeout
+            )
+            output = exec_result.stdout.strip()  # Remove any extra whitespace
+        except subprocess.TimeoutExpired:
+            # Handle the timeout
+            output = "Error: Rust program execution timed out"
+        finally:
+            # Clean up temporary files
+            os.remove(binary_path)
+            os.remove(rust_file_path)
+            os.rmdir(temp_dir)
+            
+        return output
+
+    except subprocess.TimeoutExpired:
+        # Handle the timeout
+        return "Error: Rust program execution timed"
+
 def process_solutions(model_name, language, max_problem_number):
     results_dir = os.path.join('solutions', model_name, language)
     solutions_json_path = os.path.join('solutions', model_name, language, 'solutions.json')
@@ -213,6 +265,8 @@ def process_solutions(model_name, language, max_problem_number):
             output = execute_clojure_code(code)
         if language == 'java':
             output = execute_java_code(code)
+        if language == 'rust':
+            output = execute_rust_code(code)
        
         # if the output has several lines, we only want the last one
         #print(f"Executed {solution_code_path}, raw output:{output}")

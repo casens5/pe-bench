@@ -2,6 +2,7 @@ import os
 import json
 import requests
 import urllib3
+from ollama_client import ollama_list
 from argparse import ArgumentParser
 
 def test(endpoint_name, model_name, language, skip_existing, max_problem_number=100):
@@ -40,37 +41,6 @@ def test(endpoint_name, model_name, language, skip_existing, max_problem_number=
         os.system(f"python3 execute.py --endpoint {endpoint_name} --language {language}")
     else:
         os.system(f"python3 execute.py --model {model_name} --language {language}")
-
-def ollama_list(api_base='http://localhost:11434'):
-    # call api http://localhost:11434/api/tags with http get request
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    endpoint = f"{api_base}/api/tags"
-    response = requests.get(endpoint, verify=False)
-    response.raise_for_status()
-    data = response.json()
-    models_list = data['models']
-    models_dict = {}
-    for entry in models_list:
-        # get parameter_size and quantization_level from data
-        model = entry['model']
-        details = entry['details']
-        attr = {}
-        parameter_size = details['parameter_size']
-        quantization_level = details['quantization_level']
-        parameter_size = parameter_size[:-1]
-        try:
-            parameter_size = float(parameter_size)
-            attr['parameter_size'] = parameter_size
-        except ValueError:
-            pass
-        quantization_level_char = quantization_level[1:2]
-        try:
-            quantization_level = int(quantization_level_char)
-            attr['quantization_level'] = quantization_level
-        except ValueError:
-            pass
-        models_dict[model] = attr
-    return models_dict
 
 def main():
     parser = ArgumentParser(description="Run the complete pipeline to execute solutions and store results in a JSON file.")
