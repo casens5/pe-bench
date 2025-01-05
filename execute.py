@@ -190,7 +190,8 @@ def execute_rust_code(code, timeout=10):
 
         # Create a temporary directory to store the Rust file
         temp_dir = "temp_rust"
-        os.makedirs(temp_dir, exist_ok=True)
+        if not os.path.exists(temp_dir):
+            os.makedirs(temp_dir, exist_ok=True)
 
         # Write the Rust code to a file
         rust_file_path = os.path.join(temp_dir, "rust.rs")
@@ -226,9 +227,16 @@ def execute_rust_code(code, timeout=10):
             output = "Error: Rust program execution timed out"
         finally:
             # Clean up temporary files
-            os.remove(binary_path)
-            os.remove(rust_file_path)
-            os.rmdir(temp_dir)
+            if os.path.exists(binary_path):
+                os.remove(binary_path)
+            if os.path.exists(rust_file_path):
+                os.remove(rust_file_path)
+            if os.path.exists(temp_dir):
+                # in case that the directory is not empty ignore the error
+                try:
+                    os.rmdir(temp_dir)
+                except OSError:
+                    pass
             
         return output
 
