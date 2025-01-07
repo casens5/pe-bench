@@ -1,5 +1,6 @@
-import requests
+import json
 import urllib3
+import requests
 
 def ollama_list(api_base='http://localhost:11434'):
     # call api http://localhost:11434/api/tags with http get request

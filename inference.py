@@ -36,6 +36,9 @@ def process_problem_files(problems_dir, template_content, endpoint, language, ma
             with open(result_file_path, 'w', encoding='utf-8') as result_file:
                 result_file.write(content)
             print(f"Processed problem {problem_number} and saved response to {result_file_path}")
+        except NameError as e:
+            print(f"NameError occurred: {e}")
+            print(f"Available globals: {globals().keys()}")
         except Exception as e:
             print(f"Failed to process problem {problem_number}: {e}")
 
