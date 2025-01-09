@@ -21,12 +21,6 @@ for line in readme.split("\n"):
 
 print(table)
 
-# text color in markdown: using tex colors, see https://gist.github.com/luigiMinardi/4574708d404cdf4fe0da7ac6fe2314db
-# i.e.: $\color{lime}{\textsf{Lime}}$
-# available colors:
-#   blue, brown, darkgray, gray, lightgray, green, lightblue, lime, magenta,
-#   olive, orange, pink, purple, red, teal, violet, white, yellow
-
 # produce new markdown-table from benchmark json
 # first find largest key entry
 maxkey = 0
@@ -86,9 +80,14 @@ for key, value in benchmark.items():
     col_bench_rust_100_vs = str(bench_rust_100_v)
     col_bench_clojure_100_vs = str(bench_clojure_100_v)
 
+    fillchars4key = maxkey - len(key)
+    if best_model:
+        fillchars4key -= 4
+    if fillchars4key < 0: fillchars4key = 0
+
     if col_bench_python_100_vs == '': continue
-    printkey = "$\\color{lime}{\\textsf{" + key + "}}$" if best_model else key
-    newtable += "| " + printkey + " "*(maxkey - len(key)) 
+    printkey = "**" + key + "**" if best_model else key
+    newtable += "| " + printkey + " "*(fillchars4key)
     newtable += " | " + " "*(len(col_score) - len(col_score_vs)) + col_score_vs
     newtable += " | " + " "*(len(col_size) - len(col_size_vs)) + col_size_vs
     newtable += " | " + " "*(len(col_quant) - len(col_quant_vs)) + col_quant_vs
