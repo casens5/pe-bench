@@ -21,6 +21,12 @@ for line in readme.split("\n"):
 
 print(table)
 
+# text color in markdown: using tex colors, see https://gist.github.com/luigiMinardi/4574708d404cdf4fe0da7ac6fe2314db
+# i.e.: $\color{lime}{\textsf{Lime}}$
+# available colors:
+#   blue, brown, darkgray, gray, lightgray, green, lightblue, lime, magenta,
+#   olive, orange, pink, purple, red, teal, violet, white, yellow
+
 # produce new markdown-table from benchmark json
 # first find largest key entry
 maxkey = 0
@@ -34,6 +40,8 @@ col_bench_python_100 = "PE-Bench-Python-100"
 col_bench_java_100 = "PE-Bench-Java-100"
 col_bench_rust_100 = "PE-Bench-Rust-100"
 col_bench_clojure_100 = "PE-Bench-Clojure-100"
+
+lowest_memory_amount = 9999 # to identify the best model for its class
 
 newtable =  "| Model" + " "*(maxkey-5) + " | " + col_score + " | " + col_size + " | " + col_quant + " | " + col_context + " | " + col_bench_python_100 + " | " + col_bench_java_100 + " | " + col_bench_rust_100 + " | " + col_bench_clojure_100 + " |\n"
 newtable += "| :" + "-"*(maxkey-1) + " | " + "-"*(len(col_score)-1) + ": | " + "-"*(len(col_size)-1) + ": | " + "-"*(len(col_quant)-1) + ": | " + "-"*(len(col_context)-1)
@@ -61,9 +69,15 @@ for key, value in benchmark.items():
         bench_avg += bench_clojure_100_v
         n += 1
     bench_avg = bench_avg / n if n > 0 else 0
-    score_v = (bench_avg * 800 / size_v / float(quant_v)) if quant_v and size_v and size_v > 0 else 0.0
+    memory_amount = size_v * float(quant_v) / 8.0 if quant_v and size_v and size_v > 0 else 9999 # required memory for the model in bytes
+    score_v = (100 * bench_avg / memory_amount) if quant_v and size_v and size_v > 0 else ''
 
-    col_score_vs = "{:.0f}".format(score_v)
+    best_model = False
+    if memory_amount <= lowest_memory_amount:
+        lowest_memory_amount = memory_amount
+        best_model = True
+
+    col_score_vs = '' if score_v == '' else "{:.0f}".format(score_v)
     col_size_vs = str(size_v)
     col_quant_vs = str(quant_v)
     col_context_vs = str(context_v)
@@ -73,7 +87,8 @@ for key, value in benchmark.items():
     col_bench_clojure_100_vs = str(bench_clojure_100_v)
 
     if col_bench_python_100_vs == '': continue
-    newtable += "| " + key + " "*(maxkey - len(key)) 
+    printkey = "$\\color{lime}{\\textsf{" + key + "}}$" if best_model else key
+    newtable += "| " + printkey + " "*(maxkey - len(key)) 
     newtable += " | " + " "*(len(col_score) - len(col_score_vs)) + col_score_vs
     newtable += " | " + " "*(len(col_size) - len(col_size_vs)) + col_size_vs
     newtable += " | " + " "*(len(col_quant) - len(col_quant_vs)) + col_quant_vs
