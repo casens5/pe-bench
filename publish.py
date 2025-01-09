@@ -26,10 +26,11 @@ print(table)
 maxkey = 0
 for key, value in benchmark.items():
     if len(key) > maxkey: maxkey = len(key)
-col_score = "Economic Score"
-col_size = "Size (*10^9 Params)"
-col_quant = "Quantization (Bits)"
-col_context = "Context Length (K)"
+col_best = "Best<br/>Model<br/>for<br/>Size (GB)"
+col_score = "Eco-<br/>Score"
+col_size = "Size<br/>(*10^9 Params)"
+col_quant = "Quantization<br/>(Bits)"
+col_context = "Context Length<br/>(K)"
 col_bench_python_100 = "PE-Bench-Python-100"
 col_bench_java_100 = "PE-Bench-Java-100"
 col_bench_rust_100 = "PE-Bench-Rust-100"
@@ -37,8 +38,8 @@ col_bench_clojure_100 = "PE-Bench-Clojure-100"
 
 lowest_memory_amount = 9999 # to identify the best model for its class
 
-newtable =  "| Model" + " "*(maxkey-5) + " | " + col_score + " | " + col_size + " | " + col_quant + " | " + col_context + " | " + col_bench_python_100 + " | " + col_bench_java_100 + " | " + col_bench_rust_100 + " | " + col_bench_clojure_100 + " |\n"
-newtable += "| :" + "-"*(maxkey-1) + " | " + "-"*(len(col_score)-1) + ": | " + "-"*(len(col_size)-1) + ": | " + "-"*(len(col_quant)-1) + ": | " + "-"*(len(col_context)-1)
+newtable =  "| Model" + " "*(maxkey-5) + " | " + col_best + " | " + col_score + " | " + col_size + " | " + col_quant + " | " + col_context + " | " + col_bench_python_100 + " | " + col_bench_java_100 + " | " + col_bench_rust_100 + " | " + col_bench_clojure_100 + " |\n"
+newtable += "| :" + "-"*(maxkey-1) + " | " + "-"*(len(col_best)-1) + ": | " + "-"*(len(col_score)-1) + ": | " + "-"*(len(col_size)-1) + ": | " + "-"*(len(col_quant)-1) + ": | " + "-"*(len(col_context)-1)
 newtable += ": | " + "-"*(len(col_bench_python_100)-1) + ": | " + "-"*(len(col_bench_java_100)-1) + ": | " + "-"*(len(col_bench_rust_100)-1) + ": | " + "-"*(len(col_bench_clojure_100)-1) + ": |\n"
 for key, value in benchmark.items():
     size_v = value.get('_parameter_size', '')
@@ -72,6 +73,7 @@ for key, value in benchmark.items():
         best_model = True
 
     col_score_vs = '' if score_v == '' else "{:.0f}".format(score_v)
+    col_best_vs = "{:.2f}".format(memory_amount) if best_model else ''
     col_size_vs = str(size_v)
     col_quant_vs = str(quant_v)
     col_context_vs = str(context_v)
@@ -80,14 +82,9 @@ for key, value in benchmark.items():
     col_bench_rust_100_vs = str(bench_rust_100_v)
     col_bench_clojure_100_vs = str(bench_clojure_100_v)
 
-    fillchars4key = maxkey - len(key)
-    if best_model:
-        fillchars4key -= 4
-    if fillchars4key < 0: fillchars4key = 0
-
     if col_bench_python_100_vs == '': continue
-    printkey = "**" + key + "**" if best_model else key
-    newtable += "| " + printkey + " "*(fillchars4key)
+    newtable += "| " + key + " "*(maxkey - len(key))
+    newtable += " | " + " "*(len(col_best) - len(col_best_vs)) + col_best_vs
     newtable += " | " + " "*(len(col_score) - len(col_score_vs)) + col_score_vs
     newtable += " | " + " "*(len(col_size) - len(col_size_vs)) + col_size_vs
     newtable += " | " + " "*(len(col_quant) - len(col_quant_vs)) + col_quant_vs
