@@ -31,7 +31,8 @@
         "_quantization_level": 8,
         "clojure-100": 3.32,
         "java-100": 10.15,
-        "python-100": 12.7
+        "python-100": 12.7,
+        "rust-100": 5.55
     },
     "athene-v2:latest": {
         "_context_size": 128,
@@ -60,7 +61,8 @@
         "_quantization_level": 8,
         "clojure-100": 3.49,
         "java-100": 10.5,
-        "python-100": 11.01
+        "python-100": 11.01,
+        "rust-100": 5.41
     },
     "GPT-o1-Preview": {
         "python-100": 10.9
@@ -151,7 +153,8 @@
         "_quantization_level": 8,
         "clojure-100": 1.39,
         "java-100": 5.14,
-        "python-100": 7.42
+        "python-100": 7.42,
+        "rust-100": 2.71
     },
     "tulu3:70b-q8_0": {
         "_context_size": 128,
@@ -281,7 +284,8 @@
         "_quantization_level": 8,
         "clojure-100": 0.36,
         "java-100": 3.91,
-        "python-100": 5.57
+        "python-100": 5.57,
+        "rust-100": 2.16
     },
     "gemma2:27b-instruct-q8_0": {
         "_context_size": 8,
@@ -307,7 +311,8 @@
         "_quantization_level": 8,
         "clojure-100": 0.72,
         "java-100": 3.22,
-        "python-100": 4.53
+        "python-100": 4.53,
+        "rust-100": 1.62
     },
     "hf.co/bartowski/Yi-1.5-34B-Chat-GGUF:Q8_0": {
         "_context_size": 4,
@@ -447,7 +452,8 @@
         "_quantization_level": 8,
         "clojure-100": 0.0,
         "java-100": 1.47,
-        "python-100": 2.2
+        "python-100": 2.2,
+        "rust-100": 0.5
     },
     "llama3.2:latest": {
         "_context_size": 128,
@@ -491,7 +497,8 @@
         "_quantization_level": 8,
         "clojure-100": 0.04,
         "java-100": 1.09,
-        "python-100": 1.89
+        "python-100": 1.89,
+        "rust-100": 0.36
     },
     "codegemma:7b-instruct-q8_0": {
         "_context_size": 8,
@@ -589,7 +596,8 @@
         "_quantization_level": 8,
         "clojure-100": 0.0,
         "java-100": 0.0,
-        "python-100": 0.25
+        "python-100": 0.25,
+        "rust-100": 0.0
     },
     "granite3.1-moe:1b-instruct-q8_0": {
         "_context_size": 128,
@@ -606,7 +614,8 @@
         "_quantization_level": 8,
         "clojure-100": 0.0,
         "java-100": 0.06,
-        "python-100": 0.23
+        "python-100": 0.23,
+        "rust-100": 0.0
     },
     "hf.co/bartowski/UwU-7B-Instruct-GGUF:Q8_0": {
         "_parameter_size": 7.62,
@@ -683,5 +692,13 @@
         "java-100": 0.0,
         "python-100": 0.0,
         "rust-100": 0.0
+    },
+    "deepseek-coder-v2:236b-instruct-q2_K": {
+        "_parameter_size": 235.7,
+        "_quantization_level": 2
+    },
+    "deepseek-coder-v2:16b-lite-instruct-q8_0": {
+        "_parameter_size": 15.7,
+        "_quantization_level": 8
     }
 }

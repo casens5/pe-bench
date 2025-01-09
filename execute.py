@@ -209,8 +209,14 @@ def execute_rust_code(code, timeout=10):
         # Check if the compilation was successful
         if compile_result.returncode != 0:
             # Clean up temporary files
-            os.remove(rust_file_path)
-            os.rmdir(temp_dir)
+            if os.path.exists(rust_file_path):
+                os.remove(rust_file_path)
+            if os.path.exists(temp_dir):
+                # in case that the directory is not empty ignore the error
+                try:
+                    os.rmdir(temp_dir)
+                except OSError:
+                    pass
             return f"Error: Rust compilation failed: {compile_result.stderr}"
         
         # Execute the Rust program
