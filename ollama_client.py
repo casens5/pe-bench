@@ -66,7 +66,7 @@ def ollama_chat(endpoint, prompt='Hello World', temperature=0.0, max_tokens=4096
         temperature = 1.0 # o1 models need temperature 1.0
     else:
         messages.append({"content": "You are a helpful assistant", "role": "system"})
-    if modelname.startswith("4o") or modelname.startswith("gpt-4o"):
+    if modelname.startswith("4o") or modelname.startswith("gpt-4o") or modelname.startswith("gpt-3.5"):
         # reduce number of stoptokes to 4
         stoptokens = ["[/INST]", "<|im_end|>", "<|end_of_turn|>", "<|eot_id|>"]
 
