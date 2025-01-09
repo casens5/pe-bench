@@ -94,6 +94,24 @@
         "python-100": 9.7,
         "rust-100": 4.55
     },
+    "phi4:14b-q8_0": {
+        "_context_size": 16,
+        "_parameter_size": 14.7,
+        "_quantization_level": 8,
+        "clojure-100": 0.97,
+        "java-100": 5.29,
+        "python-100": 9.64,
+        "rust-100": 4.52
+    },
+    "phi4:14b": {
+        "_context_size": 16,
+        "_parameter_size": 14.7,
+        "_quantization_level": 4,
+        "clojure-100": 0.84,
+        "java-100": 6.91,
+        "python-100": 9.26,
+        "rust-100": 3.14
+    },
     "qwen2.5:32b-instruct-q8_0": {
         "_context_size": 32,
         "_parameter_size": 32.8,
@@ -174,6 +192,14 @@
         "python-100": 7.0,
         "rust-100": 3.35
     },
+    "qwen2.5:7b-instruct-q4_K_M": {
+        "_parameter_size": 7.6,
+        "_quantization_level": 4,
+        "clojure-100": 0.49,
+        "java-100": 2.67,
+        "python-100": 6.81,
+        "rust-100": 1.86
+    },
     "llama3.1:70b-instruct-q8_0": {
         "_context_size": 128,
         "_parameter_size": 70.6,
@@ -201,6 +227,7 @@
         "rust-100": 1.13
     },
     "hf.co/bartowski/Yi-1.5-9B-Chat-GGUF:Q8_0": {
+        "_context_size": 4,
         "_parameter_size": 8.83,
         "clojure-100": 0.09,
         "java-100": 2.11,
@@ -224,6 +251,14 @@
         "java-100": 4.4,
         "python-100": 6.13,
         "rust-100": 3.78
+    },
+    "deepseek-coder:33b-instruct-q8_0": {
+        "_parameter_size": 33.0,
+        "_quantization_level": 8,
+        "clojure-100": 1.82,
+        "java-100": 10.2,
+        "python-100": 6.11,
+        "rust-100": 0.0
     },
     "nemotron:70b-instruct-q8_0": {
         "_context_size": 128,
@@ -360,6 +395,7 @@
         "rust-100": 0.17
     },
     "hf.co/bartowski/Yi-1.5-6B-Chat-GGUF:Q8_0": {
+        "_context_size": 4,
         "_parameter_size": 6.06,
         "clojure-100": 0.0,
         "java-100": 0.92,
@@ -373,6 +409,15 @@
         "clojure-100": 0.09,
         "java-100": 1.78,
         "python-100": 3.32,
+        "rust-100": 0.94
+    },
+    "deepseek-coder:6.7b-instruct-q8_0": {
+        "_context_size": 16,
+        "_parameter_size": 7.0,
+        "_quantization_level": 8,
+        "clojure-100": 0.79,
+        "java-100": 3.68,
+        "python-100": 3.31,
         "rust-100": 0.94
     },
     "exaone3.5:32b-instruct-q8_0": {
@@ -401,6 +446,15 @@
         "java-100": 1.55,
         "python-100": 2.8,
         "rust-100": 0.16
+    },
+    "deepseek-llm:67b-chat-q4_K_M": {
+        "_context_size": 4,
+        "_parameter_size": 67.0,
+        "_quantization_level": 4,
+        "clojure-100": 0.23,
+        "java-100": 1.63,
+        "python-100": 2.59,
+        "rust-100": 0.5
     },
     "exaone3.5:2.4b-instruct-q8_0": {
         "_context_size": 32,
@@ -439,6 +493,7 @@
         "rust-100": 0.42
     },
     "dolphin3:8b-llama3.1-q8_0": {
+        "_context_size": 128,
         "_parameter_size": 8.0,
         "_quantization_level": 8,
         "clojure-100": 0.31,
@@ -581,6 +636,15 @@
         "python-100": 0.6,
         "rust-100": 0.03
     },
+    "deepseek-llm:7b-chat-q8_0": {
+        "_context_size": 4,
+        "_parameter_size": 7.0,
+        "_quantization_level": 8,
+        "clojure-100": 0.0,
+        "java-100": 0.06,
+        "python-100": 0.46,
+        "rust-100": 0.0
+    },
     "gemma2:2b-instruct-q8_0": {
         "_context_size": 8,
         "_parameter_size": 2.6,
@@ -618,6 +682,7 @@
         "rust-100": 0.0
     },
     "hf.co/bartowski/UwU-7B-Instruct-GGUF:Q8_0": {
+        "_context_size": 128,
         "_parameter_size": 7.62,
         "clojure-100": 0.0,
         "java-100": 0.54,
@@ -660,6 +725,14 @@
         "python-100": 0.07,
         "rust-100": 0.0
     },
+    "deepseek-coder:1.3b-instruct-q8_0": {
+        "_parameter_size": 1.0,
+        "_quantization_level": 8,
+        "clojure-100": 0.0,
+        "java-100": 0.02,
+        "python-100": 0.0,
+        "rust-100": 0.0
+    },
     "starcoder2:3b": {
         "_context_size": 16,
         "_parameter_size": 3.0,
@@ -670,6 +743,7 @@
         "rust-100": 0.0
     },
     "smollm:1.7b-instruct-v0.2-q8_0": {
+        "_context_size": 2,
         "_parameter_size": 1.7,
         "_quantization_level": 8,
         "clojure-100": 0.0,
@@ -678,7 +752,8 @@
         "rust-100": 0.0
     },
     "smollm:135m-instruct-v0.2-q8_0": {
-        "_parameter_size": 134.52,
+        "_context_size": 2,
+        "_parameter_size": 0.135,
         "_quantization_level": 8,
         "clojure-100": 0.0,
         "java-100": 0.0,
@@ -686,7 +761,8 @@
         "rust-100": 0.0
     },
     "smollm:360m-instruct-v0.2-q8_0": {
-        "_parameter_size": 361.82,
+        "_context_size": 2,
+        "_parameter_size": 0.36,
         "_quantization_level": 8,
         "clojure-100": 0.0,
         "java-100": 0.0,
