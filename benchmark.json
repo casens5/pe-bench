@@ -254,6 +254,13 @@
         "python-100": 6.13,
         "rust-100": 3.78
     },
+    "hf.co/mradermacher/Llama-3.1-SauerkrautLM-70b-Instruct-GGUF:Q4_K_M": {
+        "_parameter_size": 70.6,
+        "clojure-100": 1.37,
+        "java-100": 5.9,
+        "python-100": 6.12,
+        "rust-100": 4.69
+    },
     "deepseek-coder:33b-instruct-q8_0": {
         "_parameter_size": 33.0,
         "_quantization_level": 8,
