@@ -275,6 +275,8 @@
     "hf.co/mradermacher/calme-3.2-instruct-78b-GGUF:Q4_K_S": {
         "_context_size": 32,
         "_parameter_size": 78.0,
+        "clojure-100": 0.74,
+        "java-100": 6.05,
         "python-100": 6.01,
         "rust-100": 3.6
     },
