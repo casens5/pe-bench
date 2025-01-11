@@ -1,8 +1,35 @@
 import json
 from argparse import ArgumentParser
 
+# load benchmark and sort it by averge score
 with open('benchmark.json', 'r', encoding='utf-8') as json_file:
     benchmark = json.load(json_file)
+
+for key, value in benchmark.items():
+    bench_python_100_v = value.get('python-100', '')
+    bench_java_100_v = value.get('java-100', '')
+    bench_rust_100_v = value.get('rust-100', '')
+    bench_clojure_100_v = value.get('clojure-100', '')
+    bench_avg = 0
+    n = 0
+    if bench_python_100_v != '':
+        bench_avg += 2 * bench_python_100_v
+        n += 2  # double weight for python
+    if bench_java_100_v != '':
+        bench_avg += 2 * bench_java_100_v
+        n += 2 # double weight for java
+    if bench_rust_100_v != '':
+        bench_avg += bench_rust_100_v
+        n += 1
+    if bench_clojure_100_v != '':
+        bench_avg += bench_clojure_100_v
+        n += 1
+    bench_avg = bench_avg / n if n > 0 else 0
+    # write the average score back to the benchmark
+    benchmark[key]['_average_score'] = bench_avg
+
+# sort the benchmark by average score
+benchmark = dict(sorted(benchmark.items(), key=lambda item: item[1]['_average_score'], reverse=True))
 
 with open('README.md', 'r', encoding='utf-8') as md_file:
     readme = md_file.read()
@@ -49,21 +76,7 @@ for key, value in benchmark.items():
     bench_java_100_v = value.get('java-100', '')
     bench_rust_100_v = value.get('rust-100', '')
     bench_clojure_100_v = value.get('clojure-100', '')
-    bench_avg = 0
-    n = 0
-    if bench_python_100_v != '':
-        bench_avg += bench_python_100_v
-        n += 1
-    if bench_java_100_v != '':
-        bench_avg += bench_java_100_v
-        n += 1
-    if bench_rust_100_v != '':
-        bench_avg += bench_rust_100_v
-        n += 1
-    if bench_clojure_100_v != '':
-        bench_avg += bench_clojure_100_v
-        n += 1
-    bench_avg = bench_avg / n if n > 0 else 0
+    bench_avg = value.get('_average_score', 0.0)
     memory_amount = size_v * float(quant_v) / 8.0 if quant_v and size_v and size_v > 0 else 9999 # required memory for the model in bytes
     score_v = (100 * bench_avg / memory_amount) if quant_v and size_v and size_v > 0 else ''
 
