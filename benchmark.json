@@ -34,6 +34,13 @@
         "python-100": 12.7,
         "rust-100": 5.55
     },
+    "hf.co/bartowski/Athene-V2-Agent-GGUF:Q4_K_M": {
+        "_parameter_size": 72.7,
+        "clojure-100": 3.74,
+        "java-100": 10.56,
+        "python-100": 12.51,
+        "rust-100": 6.33
+    },
     "athene-v2:latest": {
         "_context_size": 128,
         "_parameter_size": 72.7,
@@ -212,6 +219,13 @@
         "java-100": 2.67,
         "python-100": 6.81,
         "rust-100": 1.86
+    },
+    "hf.co/bartowski/Athene-70B-GGUF:Q4_K_M": {
+        "_parameter_size": 70.6,
+        "clojure-100": 0.36,
+        "java-100": 1.99,
+        "python-100": 6.81,
+        "rust-100": 0.76
     },
     "llama3.1:70b-instruct-q8_0": {
         "_context_size": 128,
@@ -743,6 +757,13 @@
         "java-100": 0.22,
         "python-100": 0.39,
         "rust-100": 0.03
+    },
+    "hf.co/bartowski/Qwen2-VL-72B-Instruct-GGUF:Q4_K_M": {
+        "_parameter_size": 72.7,
+        "clojure-100": 0.16,
+        "java-100": 0.0,
+        "python-100": 0.28,
+        "rust-100": 0.08
     },
     "falcon3:1b-instruct-q8_0": {
         "_context_size": 8,
