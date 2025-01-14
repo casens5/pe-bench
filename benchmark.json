@@ -114,6 +114,15 @@
         "python-100": 10.46,
         "rust-100": 6.41
     },
+    "hf.co/bartowski/Sky-T1-32B-Preview-GGUF:Q4_K_M": {
+        "_context_size": 32,
+        "_parameter_size": 32.8,
+        "_quantization_level": 4,
+        "clojure-100": 2.89,
+        "java-100": 11.67,
+        "python-100": 9.85,
+        "rust-100": 7.25
+    },
     "qwen2.5-coder:14b-instruct-q8_0": {
         "_context_size": 128,
         "_parameter_size": 14.8,
