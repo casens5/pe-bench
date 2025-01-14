@@ -35,7 +35,9 @@
         "rust-100": 5.55
     },
     "hf.co/bartowski/Athene-V2-Agent-GGUF:Q4_K_M": {
+        "_context_size": 128,
         "_parameter_size": 72.7,
+        "_quantization_level": 4,
         "clojure-100": 3.74,
         "java-100": 10.56,
         "python-100": 12.51,
@@ -71,6 +73,15 @@
         "java-100": 10.5,
         "python-100": 11.01,
         "rust-100": 5.41
+    },
+    "qwen2.5:32b-instruct-q4_K_M": {
+        "_context_size": 32,
+        "_parameter_size": 32.8,
+        "_quantization_level": 4,
+        "clojure-100": 2.25,
+        "java-100": 9.26,
+        "python-100": 10.96,
+        "rust-100": 6.13
     },
     "GPT-o1-Preview": {
         "_quantization_level": 16,
@@ -166,6 +177,15 @@
         "python-100": 8.11,
         "rust-100": 4.55
     },
+    "qwen2.5:14b-instruct-q4_K_M": {
+        "_context_size": 32,
+        "_parameter_size": 14.8,
+        "_quantization_level": 4,
+        "clojure-100": 0.43,
+        "java-100": 5.08,
+        "python-100": 7.99,
+        "rust-100": 3.44
+    },
     "qwen2.5-coder:14b-instruct-q4_K_M": {
         "_context_size": 128,
         "_parameter_size": 14.8,
@@ -183,6 +203,15 @@
         "java-100": 5.73,
         "python-100": 7.81,
         "rust-100": 3.52
+    },
+    "deepseek-coder:33b-instruct-q4_K_M": {
+        "_context_size": 16,
+        "_parameter_size": 33.0,
+        "_quantization_level": 4,
+        "clojure-100": 3.03,
+        "java-100": 10.72,
+        "python-100": 7.79,
+        "rust-100": 0.0
     },
     "falcon3:10b-instruct-q8_0": {
         "_context_size": 32,
@@ -221,7 +250,9 @@
         "rust-100": 1.86
     },
     "hf.co/bartowski/Athene-70B-GGUF:Q4_K_M": {
+        "_context_size": 8,
         "_parameter_size": 70.6,
+        "_quantization_level": 4,
         "clojure-100": 0.36,
         "java-100": 1.99,
         "python-100": 6.81,
@@ -759,7 +790,9 @@
         "rust-100": 0.03
     },
     "hf.co/bartowski/Qwen2-VL-72B-Instruct-GGUF:Q4_K_M": {
+        "_context_size": 32,
         "_parameter_size": 72.7,
+        "_quantization_level": 4,
         "clojure-100": 0.16,
         "java-100": 0.0,
         "python-100": 0.28,
