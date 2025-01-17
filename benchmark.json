@@ -753,6 +753,15 @@
         "python-100": 1.62,
         "rust-100": 0.06
     },
+    "command-r7b:7b-12-2024-q4_K_M": {
+        "_context_size": 128,
+        "_parameter_size": 8.0,
+        "_quantization_level": 4,
+        "clojure-100": 0.04,
+        "java-100": 0.03,
+        "python-100": 1.54,
+        "rust-100": 0.26
+    },
     "mixtral:8x7b-instruct-v0.1-q8_0": {
         "_context_size": 32,
         "_parameter_size": 46.7,
@@ -761,6 +770,24 @@
         "java-100": 0.65,
         "python-100": 1.44,
         "rust-100": 0.23
+    },
+    "olmo2:13b-1124-instruct-q4_K_M": {
+        "_context_size": 4,
+        "_parameter_size": 13.7,
+        "_quantization_level": 4,
+        "clojure-100": 0.03,
+        "java-100": 0.06,
+        "python-100": 1.38,
+        "rust-100": 0.01
+    },
+    "olmo2:7b-1124-instruct-q4_K_M": {
+        "_context_size": 4,
+        "_parameter_size": 7.3,
+        "_quantization_level": 4,
+        "clojure-100": 0.0,
+        "java-100": 0.08,
+        "python-100": 1.21,
+        "rust-100": 0.02
     },
     "granite3.1-dense:2b-instruct-q8_0": {
         "_context_size": 128,
