@@ -51,7 +51,7 @@ def process_markdown_files(model_name, language):
     language_dir = os.path.join('solutions', model_name, language)
 
     if not os.path.exists(language_dir):
-        raise Exception(f"Response directory {language_dir} does not exist.")
+        os.makedirs(language_dir)
 
     markdown_files = sorted(os.listdir(language_dir))
 

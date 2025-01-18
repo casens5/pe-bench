@@ -72,7 +72,7 @@ def main():
     template_path = os.path.join('templates', 'template_' + language + '.md')
 
     if not os.path.exists(problems_dir):
-        raise Exception(f"Problems directory {problems_dir} does not exist.")
+        raise Exception(f"Problems directory {problems_dir} does not exist. You must create it using the problems_scraper.py script.")
 
     if not os.path.exists(template_path):
         raise Exception(f"Template file {template_path} does not exist.")
