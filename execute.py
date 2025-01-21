@@ -275,6 +275,9 @@ def process_solutions(model_name, language, max_problem_number, expected_solutio
         # Here it might be that the LLM did actually solve the problem by itself using reasoning.
         # If that happens, the answer is in the last line and we consider that as the solution.
         last_line_of_code = code.split('\n')[-1]
+        # sometimes the numbers in the last line are formatted with commas, we remove them
+        last_line_of_code = last_line_of_code.replace(',', '')
+        # we already know the actual solution, so we can check if the last line is the solution
         expected = expected_solutions.get(problem_number, None)
         # if the expected solution is in the last line of code, we consider this as solved
         if expected and len(expected) > 0 and expected in last_line_of_code:
