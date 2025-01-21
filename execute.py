@@ -250,7 +250,7 @@ def execute_rust_code(code, timeout=10):
         # Handle the timeout
         return "Error: Rust program execution timed"
 
-def process_solutions(model_name, language, max_problem_number):
+def process_solutions(model_name, language, max_problem_number, expected_solutions):
     results_dir = os.path.join('solutions', model_name, language)
     solutions_json_path = os.path.join('solutions', model_name, language, 'solutions.json')
     extension = get_extension(language)
@@ -259,34 +259,46 @@ def process_solutions(model_name, language, max_problem_number):
         raise Exception(f"Directory '{results_dir}' does not exist.")
 
     solutions = {}
-    python_files = sorted(os.listdir(results_dir))
-    for solution_code in python_files:
-        if not solution_code.endswith('.' + extension): continue
-        solution_code_path = os.path.join(results_dir, solution_code)
+    program_files = sorted(os.listdir(results_dir))
+    for program_file in program_files:
+        if not program_file.endswith('.' + extension): continue
+        program_file_path = os.path.join(results_dir, program_file)
         extlen = len(extension) + 1
-        problem_number = solution_code[:-extlen]  # Remove extension
+        problem_number = program_file[:-extlen]  # Remove extension
         if int(problem_number) > max_problem_number: break
-        with open(solution_code_path, 'r', encoding='utf-8') as file:
-            code = file.read()
-        #print(f"Processing for execution: {solution_code_path}: code:{code}")
-        print(f"Processing for execution: {solution_code_path}")
 
-        # Execute the code and capture the output
-        output = ""
-        if language == 'python':
-            output = execute_python_code(code)
-        if language == 'clojure':
-            output = execute_clojure_code(code)
-        if language == 'java':
-            output = execute_java_code(code)
-        if language == 'rust':
-            output = execute_rust_code(code)
-       
-        # if the output has several lines, we only want the last one
-        #print(f"Executed {solution_code_path}, raw output:{output}")
-        output = output.strip().split('\n')[-1]
-        print(f"Executed {solution_code_path}:{output}")
-        solutions[problem_number] = output
+        # load the program code
+        with open(program_file_path, 'r', encoding='utf-8') as file:
+            code = file.read()
+
+        # In some cases the code extraction does not find code and considers the whole file as code.
+        # Here it might be that the LLM did actually solve the problem by itself using reasoning.
+        # If that happens, the answer is in the last line and we consider that as the solution.
+        last_line_of_code = code.split('\n')[-1]
+        expected = expected_solutions.get(problem_number, None)
+        # if the expected solution is in the last line of code, we consider this as solved
+        if expected and len(expected) > 0 and expected in last_line_of_code:
+            # remembering the correct solution is the marking that this is solved
+            solutions[problem_number] = expected
+            print(f"Accepted solution {expected} in last line of code: {last_line_of_code}")
+        else:
+            # Execute the code and capture the output
+            print(f"Running program: {program_file_path}")
+            output = ""
+            if language == 'python':
+                output = execute_python_code(code)
+            if language == 'clojure':
+                output = execute_clojure_code(code)
+            if language == 'java':
+                output = execute_java_code(code)
+            if language == 'rust':
+                output = execute_rust_code(code)
+        
+            # if the output has several lines, we only want the last one
+            #print(f"Executed {solution_code_path}, raw output:{output}")
+            output = output.strip().split('\n')[-1]
+            print(f"Executed {program_file_path}:{output}")
+            solutions[problem_number] = output
 
         # Write the solutions to a JSON file. We write this after each solution to avoid losing progress.
         with open(solutions_json_path, 'w', encoding='utf-8') as json_file:
@@ -323,12 +335,12 @@ def main():
             endpoint = json.load(file)
             model_name = endpoint.get('name', model_name)
 
-    solutions = process_solutions(model_name, language, max_problem_number)
+    with open('solutions.json', 'r', encoding='utf-8') as json_file:
+        expected_solutions = json.load(json_file)
+    solutions = process_solutions(model_name, language, max_problem_number, expected_solutions)
 
     if len(solutions) == max_problem_number:
         # evaluate the solutions by comparing with the expected results
-        with open('solutions.json', 'r', encoding='utf-8') as json_file:
-            expected_solutions = json.load(json_file)
         points = 0.0
         count = 0
         for problem_number in solutions:

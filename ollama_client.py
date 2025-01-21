@@ -42,7 +42,7 @@ def ollama_chat_endpoint(api_base='http://localhost:11434', model_name='llama3.2
     }
     return endpoint
 
-def ollama_chat(endpoint, prompt='Hello World', temperature=0.0, max_tokens=4096):
+def ollama_chat(endpoint, prompt='Hello World', temperature=0.0, max_tokens=32768):
 
     # Disable SSL warnings
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
