@@ -279,11 +279,12 @@ def process_solutions(model_name, language, max_problem_number, expected_solutio
         last_line_of_code = last_line_of_code.replace(',', '')
         # we already know the actual solution, so we can check if the last line is the solution
         expected = expected_solutions.get(problem_number, None)
+        expected_solution = expected.get('solution', '') if expected else ''
         # if the expected solution is in the last line of code, we consider this as solved
-        if expected and len(expected) > 0 and expected in last_line_of_code:
+        if expected_solution and len(expected_solution) > 0 and expected_solution in last_line_of_code:
             # remembering the correct solution is the marking that this is solved
-            solutions[problem_number] = expected
-            print(f"Accepted solution {expected} in last line of code: {last_line_of_code}")
+            solutions[problem_number] = expected_solution
+            print(f"Accepted solution {expected_solution} in last line of code: {last_line_of_code}")
         else:
             # Execute the code and capture the output
             print(f"Running program: {program_file_path}")
