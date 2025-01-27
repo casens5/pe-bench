@@ -1,7 +1,5 @@
 import os
 import json
-import requests
-import urllib3
 from ollama_client import ollama_list
 from argparse import ArgumentParser
 

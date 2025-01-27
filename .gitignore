@@ -5,6 +5,7 @@ endpoints/OpenAI_GPT-o1-Mini.json
 endpoints/OpenAI_GPT-o1.json
 .DS_Store
 endpoints/DeepSeek-V3.json
+endpoints/DeepSeek-R1.json
 problems
 solutions
 endpoints/OpenAI_GPT-o1-Preview.json

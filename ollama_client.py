@@ -1,6 +1,8 @@
+import os
 import json
 import urllib3
 import requests
+from argparse import ArgumentParser
 
 def ollama_list(api_base='http://localhost:11434'):
     # call api http://localhost:11434/api/tags with http get request
@@ -42,7 +44,7 @@ def ollama_chat_endpoint(api_base='http://localhost:11434', model_name='llama3.2
     }
     return endpoint
 
-def ollama_chat(endpoint, prompt='Hello World', temperature=0.0, max_tokens=32768):
+def ollama_chat(endpoint, prompt='Hello World', temperature=0.0, max_tokens=8192):
 
     # Disable SSL warnings
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -90,13 +92,16 @@ def ollama_chat(endpoint, prompt='Hello World', temperature=0.0, max_tokens=3276
         payload["max_tokens"] = max_tokens
 
     try:
+        #print(payload)
         response = requests.post(endpoint["endpoint"], headers=headers, json=payload, verify=False)
+        #print(response)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         # print(f"Failed to access api: {e}")
         # Get the error message from the response
         if response:
             try:
+                #print(response.text)
                 data = response.json()
                 message = data.get('message', {})
                 content = message.get('content', '')
@@ -106,6 +111,7 @@ def ollama_chat(endpoint, prompt='Hello World', temperature=0.0, max_tokens=3276
 
     # Parse the response
     try:
+        #print(response.text)
         data = response.json()
         #print(data)
         choices = data.get('choices', [])
@@ -114,14 +120,38 @@ def ollama_chat(endpoint, prompt='Hello World', temperature=0.0, max_tokens=3276
         message = choices[0].get('message', {})
         content = message.get('content', '')
         return content
-    except json.JSONDecodeError:
-        raise Exception("Failed to parse JSON response from the API.")
-
+    except json.JSONDecodeError as e:
+        raise Exception(f"Failed to parse JSON response from the API: {e}")
 
 def main():
+    parser = ArgumentParser(description="Testing the ollama API.")
+    parser.add_argument('--api_base', required=False, default='http://localhost:11434', help='API base URL for the LLM, default is http://localhost:11434')
+    parser.add_argument('--endpoint', required=False, default='', help='Name of an <endpoint>.json file in the endpoints directory')
+    parser.add_argument('--model', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
+    
+    # parse the arguments
+    args = parser.parse_args()
+    api_base = args.api_base
+    endpoint_name = args.endpoint
+    model_name = args.model
+
+    # load the endpoint file
+    endpoint = {}
+    if endpoint_name:
+        print(f"Using endpoint {endpoint_name}")
+        endpoint_path = os.path.join('endpoints', f"{endpoint_name}.json")
+        print(f"Using endpoint file {endpoint_path}")
+        if not os.path.exists(endpoint_path):
+            raise Exception(f"Endpoint file {endpoint_path} does not exist.")
+        with open(endpoint_path, 'r', encoding='utf-8') as file:
+            endpoint = json.load(file)
+    else:
+        endpoint = ollama_chat_endpoint(api_base, model_name)
+    
+    # access the ollama API
     models_dict = ollama_list()
     print(models_dict)
-    answer = ollama_chat(ollama_chat_endpoint())
+    answer = ollama_chat(endpoint)
     print(answer)
 
 if __name__ == "__main__":

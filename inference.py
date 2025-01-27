@@ -1,7 +1,5 @@
 import os
 import json
-import requests
-import urllib3
 from ollama_client import ollama_list, ollama_chat_endpoint, ollama_chat
 from argparse import ArgumentParser
 
@@ -95,7 +93,7 @@ def main():
             # add metadata to benchmark.json
             if not model in benchmark or not bench_name in benchmark[model]:
                 print(f"Inference: Using model {model} and language {language}")
-                endpoint = ollama_chat_endpoint('http://localhost:11434', model)
+                endpoint = ollama_chat_endpoint(api_base, model)
                 process_problem_files(problems_dir, template_content, endpoint, language, max_problem_number = max_problem_number, skip_existing = args.skip_existing)
     else:
         # construct the endpoint object
@@ -111,7 +109,7 @@ def main():
         else:
             print(f"Inference: Using model {model_name} and language {language}")
             # construct the endpoint object from command line arguments considering that ollama is the endpoint
-            endpoint = ollama_chat_endpoint('http://localhost:11434', model_name)
+            endpoint = ollama_chat_endpoint(api_base, model_name)
         
         # run the inference
         process_problem_files(problems_dir, template_content, endpoint, language, max_problem_number = max_problem_number, skip_existing = args.skip_existing)
