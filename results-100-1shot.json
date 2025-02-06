@@ -1,0 +1,10 @@
+[
+  {
+    "model": "llama3.2:1b",
+    "successes": 2,
+    "successful_tests": [
+      1,
+      2
+    ]
+  }
+]

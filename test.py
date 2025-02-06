@@ -1,111 +1,206 @@
-import os
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ollama.llms import OllamaLLM
 import json
-from ollama_client import ollama_list
-from argparse import ArgumentParser
+import sys
+import io
+import re
+import subprocess
+import signal
+from contextlib import contextmanager
 
-def test(endpoint_name, model_name, language, skip_existing, max_problem_number=100):
-    # call inference.py
-    if endpoint_name:
-        if skip_existing:
-            if max_problem_number == 200:
-                os.system(f"python3 inference.py --endpoint {endpoint_name} --language {language} --n200 --skip_existing")
-            else:
-                os.system(f"python3 inference.py --endpoint {endpoint_name} --language {language} --skip_existing")
+def install_missing_packages(code: str):
+    """
+    Scan the code for import statements, determine if each package is installed,
+    and install it via pip if not.
+    """
+    # Regex patterns for import lines:
+    # - Pattern 1 matches: import package[.subpackage] [as alias][, package2 [as alias2], ...]
+    # - Pattern 2 matches: from package import something
+    pattern_import = r'^\s*import\s+((?:[a-zA-Z0-9_]+(?:\s+as\s+[a-zA-Z0-9_]+)?(?:\s*,\s*)?)+)'
+    pattern_from = r'^\s*from\s+([a-zA-Z0-9_]+)\s+import\s+'
+
+    packages_to_install = set()
+    for line in code.splitlines():
+        # Check "import foo[, bar]"
+        match_import = re.match(pattern_import, line)
+        if match_import:
+            # Split multiple imports and handle 'as' aliases
+            imports = match_import.group(1).split(',')
+            for imp in imports:
+                # Take just the package name, before any 'as' statement
+                package = imp.strip().split(' as ')[0].strip()
+                packages_to_install.add(package)
+            continue
+
+        # Check "from foo import bar"
+        match_from = re.match(pattern_from, line)
+        if match_from:
+            packages_to_install.add(match_from.group(1))
+
+    # Attempt to import each package, install if that fails
+    for package in packages_to_install:
+        try:
+            __import__(package)
+        except ImportError:
+            print(f"Installing missing package: {package}")
+            subprocess.run(
+                [sys.executable, "-m", "pip", "install", package],
+                check=True
+            )
+
+class TimeoutException(Exception):
+    pass
+
+@contextmanager
+def time_limit(seconds):
+    def signal_handler(signum, frame):
+        raise TimeoutException("Timed out!")
+    signal.signal(signal.SIGALRM, signal_handler)
+    signal.alarm(seconds)
+    try:
+        yield
+    finally:
+        signal.alarm(0)
+
+def log_to_file(text: str, filename: str = "log.txt"):
+    with open(filename, 'a', encoding='utf-8') as f:
+        f.write(f"{text}\n")
+
+def test_problem(problem, model_name):
+    print("beginning problem ", problem["id"], "\n\n")
+    template = """
+        Solve this math/programming challenge by writing a python script.  You can import any packages you need.  Solutions are allowed 60 seconds to run using moderate hardware.  Format your solution like this:
+
+        SOLUTION:
+        ```
+        def solution():
+            # your solution here
+            return answer
+            ```
+
+        Question: {question}
+    """
+    if 'supplement' in problem:
+        if "supplement_2" in problem:
+            template += """
+            the additional data required to solve the problem are plaintext strings in the namespace as `SUPPLEMENT` and `SUPPLEMENT_2`.  here are some snippets of the first 1000 characters of the data:
+            `SUPPLEMENT`:
+            ```
+            {supplement}
+            ```
+            `SUPPLEMENT_2`:
+            ```
+            {supplement_2}
+            ```
+            """
         else:
-            if max_problem_number == 200:
-                os.system(f"python3 inference.py --endpoint {endpoint_name} --language {language} --n200")
-            else:
-                os.system(f"python3 inference.py --endpoint {endpoint_name} --language {language}")
-    else:
-        if skip_existing:
-            if max_problem_number == 200:
-                os.system(f"python3 inference.py --model {model_name} --language {language} --n200 --skip_existing")
-            else:
-                os.system(f"python3 inference.py --model {model_name} --language {language} --skip_existing")
-        else:
-            if max_problem_number == 200:
-                os.system(f"python3 inference.py --model {model_name} --language {language} --n200")
-            else:
-                os.system(f"python3 inference.py --model {model_name} --language {language}")
+            template += """the additional data required to solve the problem is a plaintext string in the namespace as `SUPPLEMENT`.  here's a snippet of the first 1000 characters:
+            `SUPPLEMENT`:
+            ```
+            {supplement}
+            ```
+            """
 
-    # call codeextraction.py
-    if endpoint_name:
-        os.system(f"python3 codeextraction.py --endpoint {endpoint_name} --language {language}")
-    else:
-        os.system(f"python3 codeextraction.py --model {model_name} --language {language}")
+    prompt = ChatPromptTemplate.from_template(template)
+    model = OllamaLLM(model=model_name)
+    chain = prompt | model
 
-    # call execute.py
-    if endpoint_name:
-        os.system(f"python3 execute.py --endpoint {endpoint_name} --language {language}")
-    else:
-        os.system(f"python3 execute.py --model {model_name} --language {language}")
+    # Prepare the input variables
+    input_vars = {"question": problem["statement"]}
+    if 'supplement' in problem:
+        input_vars["supplement"] = problem["supplement"][:1000]  # First 1000 chars of supplement
 
-def main():
-    parser = ArgumentParser(description="Run the complete pipeline to execute solutions and store results in a JSON file.")
-    parser.add_argument('--allmodels', action='store_true', help='loop over all models provided by ollama and run those which are missing in benchmark.json')
-    parser.add_argument('--model', required=False, default='llama3.2:latest', help='Name of the model to use, default is llama3.2:latest')
-    parser.add_argument('--language', required=False, default='python,java,rust,clojure', help='Name of the languages to test, default is python,java,rust,clojure')
-    parser.add_argument('--skip_existing', action='store_true', help='if set, skip problems that already have a solution')
-    parser.add_argument('--endpoint', required=False, default='', help='Name of an <endpoint>.json file in the endpoints directory')
-    parser.add_argument('--n100', action='store_true', help='only 100 problems') # this is the default
-    parser.add_argument('--n200', action='store_true', help='only 200 problems')
-    parser.add_argument('--n400', action='store_true', help='only 400 problems')
-    parser.add_argument('--nall', action='store_true', help='all problems')
+    print("model responding")
+    try:
+        with time_limit(900):
+            llm_response = chain.invoke(input_vars)
+        print("model responded")
+    except TimeoutException:
+        print("model timed out")
+        return False
 
-    args = parser.parse_args()
-    model_name = args.model
-    max_problem_number = 100
-    if args.n100: max_problem_number = 100
-    if args.n200: max_problem_number = 200
-    if args.n400: max_problem_number = 400
-    if args.nall: max_problem_number = 9999
-    skip_existing = args.skip_existing
-    endpoint_name = args.endpoint
+    output = io.StringIO()
+    sys.stdout = output
 
-    # iterate over all languages
-    languages = args.language.split(',')
-    for language in languages:
-        bench_name = f"{language}-{max_problem_number}"
+    namespace = {}
+    result = None
 
-        if args.allmodels:
-            if endpoint_name:
-                raise Exception("The --allmodels option cannot be used in combination with --endpoint.")
-            
-            # loop over all models provided by ollama and run those which are missing in benchmark.json
-            with open('benchmark.json', 'r', encoding='utf-8') as json_file:
-                benchmark = json.load(json_file)
-            # load models from ollama
-            models = ollama_list()
-            print(f"Found {len(models)} models in ollama.")
-            for model in models:
-                # in every loop we load the benchmark.json again because it might have been updated
-                with open('benchmark.json', 'r', encoding='utf-8') as json_file:
-                    benchmark = json.load(json_file)
-                entry = benchmark.get(model, {})
+    pattern = r"SOLUTION:\s*```(?:\w+\n)?(.*?)```"
+    match = re.search(pattern, llm_response, re.DOTALL)
 
-                # add metadata to benchmark.json
-                if not model in benchmark or not bench_name in benchmark[model]:
-                    # run the model; this writes a news entry to benchmark.json
-                    test(endpoint_name, model, language, skip_existing, max_problem_number)
-                    # load benchmark.json again because the test has updated it
-                    with open('benchmark.json', 'r', encoding='utf-8') as json_file:
-                        benchmark = json.load(json_file)
-                    # because testing can be interrupted, there is no guarantee that the entry is present
-                    entry = benchmark.get(model, {})
-                    
-                # check if attributes parameter_size and quantization_level are present in benchmark.json
-                if not '_parameter_size' in entry and models[model].get('parameter_size', None):
-                    entry['_parameter_size'] = models[model].get('parameter_size', None)
-                if not '_quantization_level' in entry and models[model].get('quantization_level', None):
-                    entry['_quantization_level'] = models[model].get('quantization_level', None)
-                entry = dict(sorted(entry.items(), key=lambda item: item[0]))
-                benchmark[model] = entry
+    #print("wtf \n\n", llm_response)
 
-                # write the updated benchmark file
-                with open('benchmark.json', 'w', encoding='utf-8') as json_file:
-                    json.dump(benchmark, json_file, indent=4)
-        else:
-            test(endpoint_name, model_name, language, skip_existing)
+    if match:
+        llm_code = match.group(1)
+        #print(llm_code)
+        if 'supplement' in problem:
+            namespace['SUPPLEMENT'] = problem['supplement']
 
-if __name__ == "__main__":
-    main()
+        if 'supplement_2' in problem:
+            namespace['SUPPLEMENT_2'] = problem['supplement_2']
+
+        try:
+            install_missing_packages(llm_code)
+            try: 
+                with time_limit(60):
+                    exec(llm_code, namespace)
+
+                    if 'solution' in namespace:
+                        result = namespace['solution']()
+
+            except TimeoutException:
+                print("Solution timed out after 60 seconds")
+                result = None
+            except Exception as e:
+                print(f"Error in solution execution: {e}")
+                result = None
+        except Exception as e:
+            print(f"Error in code setup: {e}")
+            result = None
+
+    sys.stdout = sys.__stdout__
+
+    print("Captured Output:", output.getvalue())
+    print("Result:", result)
+    return str(result) == str(problem["solution"])
+
+
+with open("problems.json", "r") as f:
+    problems = json.load(f)
+
+model_name = "deepseek-r1:14b"
+
+problems_5 = [p for p in problems if p.get("difficulty") == "5%" and "supplement" not in p]
+problems_10 = [p for p in problems if p.get("difficulty") == "10%" and "supplement" not in p]
+problems = problems_5 + problems_10
+
+i = 0
+while i < 5:
+    wins = []
+    for problem in problems[:100]:
+        if test_problem(problem, model_name):
+            wins.append(problem["id"])
+        log_to_file(f"loop {i} problem {problem['id']} wins: {wins}", "log.txt")
+    #print("wins: ", wins)
+    i += 1
+    # Read existing results
+    try:
+        with open("results-100-1shot.json", "r") as f:
+            existing_results = json.load(f)
+    except FileNotFoundError:
+        existing_results = []
+
+    # Create new result
+    new_result = {
+        "model": model_name,
+        "successes": len(wins),
+        "successful_tests": wins
+    }
+
+    print('hi', new_result)
+    # Append new result
+    existing_results.append(new_result)
+
+    # Write back all results
+    with open("results-100-1shot.json", "w") as f:
+        json.dump(existing_results, f, indent=2)
