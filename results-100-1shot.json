@@ -6,5 +6,31 @@
       1,
       2
     ]
+  },
+  {
+    "model": "llama3.2:1b",
+    "wins_count": 5,
+    "wins": [
+      2,
+      3,
+      4,
+      7,
+      9
+    ],
+    "fails": [],
+    "model_timeout": [],
+    "solution_not_found": [],
+    "code_timeout_fail": [
+      8
+    ],
+    "code_exec_fail": [
+      6
+    ],
+    "package_install_fail": [],
+    "regex_match_fail": [
+      1,
+      5,
+      10
+    ]
   }
 ]

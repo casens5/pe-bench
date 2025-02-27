@@ -13,3 +13,13 @@ loop 2 problem 2 wins: [1, 2]
 loop 2 problem 3 wins: [1, 2]
 loop 2 problem 4 wins: [1, 2]
 loop 2 problem 5 wins: [1, 2]
+Problem 1 result: regex_match_fail
+Problem 2 result: True
+Problem 3 result: True
+Problem 4 result: True
+Problem 5 result: regex_match_fail
+Problem 6 result: code_exec_fail
+Problem 7 result: True
+Problem 8 result: code_timeout_fail
+Problem 9 result: True
+Problem 10 result: regex_match_fail

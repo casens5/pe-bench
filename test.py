@@ -76,7 +76,7 @@ def log_to_file(text: str, filename: str = "log.txt"):
 def test_problem(problem, model_name):
     print("beginning problem ", problem["id"], "\n\n")
     template = """
-        Solve this math/programming challenge by writing a python script.  You can import any packages you need.  Solutions are allowed 60 seconds to run using moderate hardware.  Format your solution like this:
+        Solve this math/programming challenge by writing a python script.  You can import any packages you need.  Solutions will be given a maximum of 60 seconds to execute using moderate hardware.  Format your solution like this:
 
         SOLUTION:
         ```
@@ -85,36 +85,16 @@ def test_problem(problem, model_name):
             return answer
         ```
 
+        That is, your response must contain `SOLUTION:`, then a code block beginning and ending with three backticks (```).  All python code in this block will be executed (package imports, variable and function definitions, etc), but you must include a `solution` function, which returns the value that the question asks for.
+
         Question: {question}
     """
-    if "supplement" in problem:
-        if "supplement_2" in problem:
-            template += """
-            the additional data required to solve the problem are plaintext strings in the namespace as `SUPPLEMENT` and `SUPPLEMENT_2`.  here are some snippets of the first 1000 characters of the data:
-            `SUPPLEMENT`:
-            ```
-            {supplement}
-            ```
-            `SUPPLEMENT_2`:
-            ```
-            {supplement_2}
-            ```
-            """
-        else:
-            template += """the additional data required to solve the problem is a plaintext string in the namespace as `SUPPLEMENT`.  here's a snippet of the first 1000 characters:
-            `SUPPLEMENT`:
-            ```
-            {supplement}
-            ```
-            """
 
     prompt = ChatPromptTemplate.from_template(template)
     model = OllamaLLM(model=model_name)
     chain = prompt | model
 
     input_vars = {"question": problem["statement"]}
-    if "supplement" in problem:
-        input_vars["supplement"] = problem["supplement"][:1000]
 
     print("model responding")
     try:
@@ -123,24 +103,19 @@ def test_problem(problem, model_name):
         print("model responded")
     except TimeoutException:
         print("model timed out")
-        return False
+        return "model_timeout"
 
     output = io.StringIO()
     sys.stdout = output
 
     namespace = {}
-    result = None
+    error_condition = None
 
     pattern = r"SOLUTION:\s*```(?:\w+\n)?(.*?)```"
     match = re.search(pattern, llm_response, re.DOTALL)
 
     if match:
         llm_code = match.group(1)
-        if "supplement" in problem:
-            namespace["SUPPLEMENT"] = problem["supplement"]
-
-        if "supplement_2" in problem:
-            namespace["SUPPLEMENT_2"] = problem["supplement_2"]
 
         try:
             install_missing_packages(llm_code)
@@ -152,49 +127,74 @@ def test_problem(problem, model_name):
                         result = namespace["solution"]()
                     else:
                         print("no solution() function found in model's response")
-                        result = None
+                        error_condition = "solution_not_found"
 
             except TimeoutException:
                 print("Solution timed out after 60 seconds")
-                result = None
+                error_condition = "code_timeout_fail"
             except Exception as e:
                 print(f"Error in solution execution: {e}")
-                result = None
+                error_condition = "code_exec_fail"
         except Exception as e:
-            print(f"Error in code setup: {e}")
-            result = None
+            print(f"failed to install packages: {e}")
+            error_condition = "package_install_fail"
     else:
         print("no regex match found in model's response")
-        result = None
+        error_condition = "regex_match_fail"
 
     sys.stdout = sys.__stdout__
 
-    print("Captured Output:", output.getvalue())
-    print("Result:", result)
+    # print("Captured Output:", output.getvalue())
+    # print("Result:", result)
+    if error_condition:
+        return error_condition
     return str(result) == str(problem["solution"])
 
 
 with open("problems.json", "r") as f:
     problems = json.load(f)
 
-model_name = "deepseek-r1:14b"
-all_problems_sorted = sorted(
-    [p for p in problems if "supplement" not in p],
-    key=lambda p: float(p.get("difficulty", "100%").rstrip("%")),
-)
-
-hard_300 = [p["id"] for p in all_problems_sorted[600:]]
-
-with open("hard_300.json", "w") as f:
-    json.dump(hard_300, f, indent=2)
+model_name = "llama3.2:1b"
 
 
 def run_benchmark(model_name):
-    wins = []
-    for problem in problems[:100]:
-        if test_problem(problem, model_name):
-            wins.append(problem["id"])
-        log_to_file(f"loop {i} problem {problem['id']} wins: {wins}", "log.txt")
+    print("lets go")
+    results = {
+        "wins": [],
+        "fails": [],
+        "model_timeout": [],
+        "solution_not_found": [],
+        "code_timeout_fail": [],
+        "code_exec_fail": [],
+        "package_install_fail": [],
+        "regex_match_fail": [],
+    }
+
+    with open("problems.json", "r") as f:
+        problems = {p["id"]: p for p in json.load(f)}
+
+    with open("easiest_100.json", "r") as f:
+        easiest_problem_ids = json.load(f)
+
+    for problem_id in easiest_problem_ids[:10]:
+        if problem_id in problems:
+            problem = problems[problem_id]
+            result = test_problem(problem, model_name)
+            if result is True:
+                results["wins"].append(problem["id"])
+            elif result is False:
+                results["fails"].append(problem["id"])
+            else:
+                results[result].append(problem["id"])
+            log_to_file(f"Problem {problem['id']} result: {result}", "log.txt")
+        else:
+            print(
+                """
+                  **********************************
+                  id does not exist error!
+                  **********************************
+                  """
+            )
 
     try:
         with open("results-100-1shot.json", "r") as f:
@@ -202,18 +202,26 @@ def run_benchmark(model_name):
     except FileNotFoundError:
         existing_results = []
 
-    new_result = {"model": model_name, "successes": len(wins), "successful_tests": wins}
+    new_result = {
+        "model": model_name,
+        "wins_count": len(results["wins"]),
+        "wins": results["wins"],
+        "fails": results["fails"],
+        "model_timeout": results["model_timeout"],
+        "solution_not_found": results["solution_not_found"],
+        "code_timeout_fail": results["code_timeout_fail"],
+        "code_exec_fail": results["code_exec_fail"],
+        "package_install_fail": results["package_install_fail"],
+        "regex_match_fail": results["regex_match_fail"],
+    }
 
-    print("hi", new_result)
+    print("Results:", new_result)
     existing_results.append(new_result)
 
     with open("results-100-1shot.json", "w") as f:
         json.dump(existing_results, f, indent=2)
 
+    print("were done")
 
-"""
-i = 0
-while i < 5:
-    run_benchmark(model_name)
-    i += 1
-"""
+
+run_benchmark(model_name)
